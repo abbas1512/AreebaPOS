@@ -4,6 +4,7 @@ import com.areeba.POS.dto.BusinessDTO;
 import com.areeba.POS.dto.UserDTO;
 import com.areeba.POS.entity.User;
 
+import javax.ws.rs.BadRequestException;
 import java.util.List;
 
 public interface UserService {
