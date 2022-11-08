@@ -1,22 +1,24 @@
 package com.areeba.POS.services;
 
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.CustomerDTO;
 import com.areeba.POS.entity.Customers;
 
 import java.util.List;
 
 public interface CustomerService {
+    Customers createCustomer(CustomerDTO customerDTO);
 
-    void createCustomer(CustomerDTO customerDTO) throws Exception;
+    RestCommonResponse updateCustomer(long Id, CustomerDTO customerDTO);
 
-    void updateCustomer(CustomerDTO customerDTO, long Id);
+    RestCommonResponse deleteCustomer(long Id);
 
-    void deleteCustomer(long Id);
+    RestCommonResponse saveCustomer(CustomerDTO customerDTO, String name);
 
     Customers findById(long Id);
 
     Customers findByName(String name);
 
-    List<Customers> getAll();
+    RestCommonResponse getAll();
 
 }

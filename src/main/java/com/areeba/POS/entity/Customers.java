@@ -47,4 +47,14 @@ public class Customers implements Serializable {
 
     private String name = firstName + " " + lastName;
 
+    public Customers(Set<Sales> saleId, String name, String phoneNumber,
+                     String email, String address, String company, Date birthday) {
+        this.saleId = saleId;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.company = company;
+        this.birthday = birthday;
+        this.name = name;
+    }
 }

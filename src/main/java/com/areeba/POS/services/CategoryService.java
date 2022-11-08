@@ -1,23 +1,23 @@
 package com.areeba.POS.services;
 
-
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.CategoryDTO;
 import com.areeba.POS.entity.Category;
 
-import java.util.List;
-
 public interface CategoryService {
 
-    void createCategory(CategoryDTO categoryDTO) throws Exception;
+    Category createCategory(CategoryDTO categoryDTO);
 
-    void updateCategory(CategoryDTO categoryDTO, long Id);
+    RestCommonResponse updateCategory(long Id, CategoryDTO categoryDTO);
 
-    void deleteCategory(long Id);
+    RestCommonResponse deleteCategory(long Id);
+
+    RestCommonResponse saveCategory(CategoryDTO categoryDTO, String name);
 
     Category findById(long Id);
 
     Category findByName(String name);
 
-    List<Category> getAll();
+    RestCommonResponse getAll();
 
 }

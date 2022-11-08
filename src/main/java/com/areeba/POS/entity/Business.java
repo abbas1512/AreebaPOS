@@ -52,4 +52,15 @@ public class Business implements Serializable {
     @Column(name = "postalCode", nullable = false)
     private String postalCode;
 
+    public Business(User userId, Set<Items> itemId, String name, String type,
+                    String category, String address, String city, String postalCode) {
+        this.userId = userId;
+        this.itemId = itemId;
+        this.name = name;
+        this.type = type;
+        this.category = category;
+        this.address = address;
+        this.city = city;
+        this.postalCode = postalCode;
+    }
 }

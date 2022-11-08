@@ -1,30 +1,29 @@
 package com.areeba.POS.services;
 
-import com.areeba.POS.dto.BusinessDTO;
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.UserDTO;
 import com.areeba.POS.entity.User;
 
-import javax.ws.rs.BadRequestException;
-import java.util.List;
-
 public interface UserService {
 
-    void createUser(UserDTO userDTO) throws Exception;
+    User createUser(UserDTO userDTO);
 
-    void updateUser(UserDTO userDTO, long Id);
+    RestCommonResponse updateUser(long Id, UserDTO userDTO);
 
-    void deleteUser(long Id);
+    RestCommonResponse updatePassword(long Id, String password);
 
-    void createBusiness(BusinessDTO businessDTO) throws Exception;
+    RestCommonResponse updatePasswordEmail(String email, String password);
 
-    void updateBusiness(BusinessDTO businessDTO, long Id);
+    RestCommonResponse activateUser(String email);
 
-    void deleteBusiness(long Id);
+    RestCommonResponse deleteUser(long Id);
+
+    RestCommonResponse saveUser(UserDTO userDTO, String email);
 
     User findById(long Id);
 
     User findByEmail(String email);
 
-    List<User> getAll();
+    RestCommonResponse getAll();
 
 }

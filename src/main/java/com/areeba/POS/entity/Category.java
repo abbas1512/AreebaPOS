@@ -26,4 +26,8 @@ public class Category implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Category(Set<Items> itemId, String name) {
+        this.itemId = itemId;
+        this.name = name;
+    }
 }

@@ -1,5 +1,6 @@
 package com.areeba.POS.services;
 
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.VariationDTO;
 import com.areeba.POS.entity.Variations;
 
@@ -7,16 +8,18 @@ import java.util.List;
 
 public interface VariationServices {
 
-    void createVariation(VariationDTO variationDTO) throws Exception;
+    Variations createVariation(VariationDTO variationDTO);
 
-    void updateVariation(VariationDTO variationDTO, long Id);
+    RestCommonResponse updateVariation(long Id, VariationDTO variationDTO);
 
-    void deleteVariation(long Id);
+    RestCommonResponse deleteVariation(long Id);
+
+    RestCommonResponse saveVariation(VariationDTO variationDTO, String name);
 
     Variations findById(long Id);
 
     Variations findByName(String name);
 
-    List<Variations> getAll();
+    RestCommonResponse getAll();
 
 }

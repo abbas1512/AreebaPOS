@@ -1,57 +1,100 @@
 package com.areeba.POS.services.Impl;
 
+import com.areeba.POS.common.ErrorResponseApisEnum;
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.DiscountDTO;
 import com.areeba.POS.entity.Discounts;
 import com.areeba.POS.repository.DiscountRepository;
 import com.areeba.POS.services.DiscountService;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.BadRequestException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service("DiscountServices")
 public class DiscountServicesImpl implements DiscountService {
 
     @Autowired
-    DiscountRepository discountRepository;
+    private final DiscountRepository discountRepository;
+    private static final Logger log = (Logger) LoggerFactory.getLogger(DiscountServicesImpl.class);
+
+    public DiscountServicesImpl(DiscountRepository discountRepository) {
+        this.discountRepository = discountRepository;
+    }
 
     @Override
-    public void createDiscount(DiscountDTO discountDTO) {
+    public Discounts createDiscount(DiscountDTO discountDTO) {
         Discounts discount = new Discounts();
         discount.setSaleId(discountDTO.getSaleId());
         discount.setName(discountDTO.getName());
         discount.setType(discountDTO.getType());
         discount.setAmount(discountDTO.getAmount());
-        discountRepository.save(discount);
+        return discountRepository.save(discount);
     }
 
     @Override
-    public void updateDiscount(DiscountDTO discountDTO, long Id) {
-        Discounts discountById = discountRepository.findById(Id);
-        discountById.setSaleId(discountDTO.getSaleId());
-        discountById.setName(discountDTO.getName());
-        discountById.setType(discountDTO.getType());
-        discountById.setAmount(discountDTO.getAmount());
-        discountRepository.save(discountById);
+    public RestCommonResponse updateDiscount(long Id, DiscountDTO discountDTO) {
+        if (this.discountRepository.findById(Id) != null) {
+            Discounts discountsById = this.discountRepository.findById(Id);
+            discountsById.setSaleId(discountDTO.getSaleId());
+            discountsById.setName(discountDTO.getName());
+            discountsById.setType(discountDTO.getType());
+            discountsById.setAmount(discountDTO.getAmount());
+            Discounts updatedDiscounts = this.discountRepository.save(discountsById);
+            return new RestCommonResponse(true, new Discounts(
+                    updatedDiscounts.getSaleId(),
+                    updatedDiscounts.getName(),
+                    updatedDiscounts.getType(),
+                    updatedDiscounts.getAmount()
+            ));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
     }
 
     @Override
-    public void deleteDiscount(long Id) {
-        discountRepository.deleteById(Id);
+    public RestCommonResponse deleteDiscount(long Id) {
+        if (this.discountRepository.findById(Id) != null) {
+            this.discountRepository.deleteById(Id);
+            return new RestCommonResponse(true, "Deleted");
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
+    }
+
+    @Override
+    public RestCommonResponse saveDiscount(DiscountDTO discountDTO, String name) {
+        Discounts discounts = this.discountRepository.findByName(name);
+        if (discounts == null) {
+            log.info("Saving discount to the database");
+            return new RestCommonResponse(true, this.discountRepository.save(discounts));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.AlreadyRegistered)));
+        }
     }
 
     @Override
     public Discounts findById(long Id) {
-        return discountRepository.findById(Id);
+        log.info("Fetching Discount");
+        return this.discountRepository.findById(Id);
     }
 
     @Override
     public Discounts findByName(String name) {
-        return discountRepository.findByName(name);
+        log.info("Fetching Discount");
+        return this.discountRepository.findByName(name);
     }
 
     @Override
-    public List<Discounts> getAll() {
-        return discountRepository.findAll();
+    public RestCommonResponse getAll() {
+        log.info("Fetching All Customers");
+        List<Discounts> discounts = this.discountRepository.findAll();
+        return new RestCommonResponse(true, discounts);
     }
 }

@@ -26,4 +26,8 @@ public class Options implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Options(Set<OptionVariations> optionVariationId, String name) {
+        this.optionVariationId = optionVariationId;
+        this.name = name;
+    }
 }

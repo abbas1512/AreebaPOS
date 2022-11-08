@@ -40,4 +40,12 @@ public class ItemSales implements Serializable {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    public ItemSales(Items itemId, Sales saleId, String name, String SKU, BigDecimal price, int quantity) {
+        this.itemId = itemId;
+        this.saleId = saleId;
+        this.name = name;
+        this.SKU = SKU;
+        this.price = price;
+        this.quantity = quantity;
+    }
 }

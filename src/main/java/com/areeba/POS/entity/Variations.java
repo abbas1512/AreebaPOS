@@ -42,4 +42,12 @@ public class Variations implements Serializable {
     @Column(name = "stock", nullable = false)
     private int stock;
 
+    public Variations(Items itemId, OptionVariations optionVariationId, String name, Unit unit, BigDecimal price, int stock) {
+        this.itemId = itemId;
+        this.optionVariationId = optionVariationId;
+        this.name = name;
+        this.unit = unit;
+        this.price = price;
+        this.stock = stock;
+    }
 }

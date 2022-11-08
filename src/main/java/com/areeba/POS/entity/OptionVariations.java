@@ -30,4 +30,9 @@ public class OptionVariations implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public OptionVariations(Set<Variations> variationId, Options optionId, String name) {
+        this.variationId = variationId;
+        this.optionId = optionId;
+        this.name = name;
+    }
 }

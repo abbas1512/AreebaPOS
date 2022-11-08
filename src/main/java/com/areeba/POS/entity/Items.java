@@ -58,4 +58,18 @@ public class Items implements Serializable {
     @Column(name = "stock", nullable = false)
     private int stock;
 
+    public Items(Business businessId, Category categoryId, Set<Variations> variationId, Set<Taxes> taxId,
+                 Set<ItemSales> itemSaleId, String name, Blob image, String SKU, Unit unit, BigDecimal price, int stock) {
+        this.businessId = businessId;
+        this.categoryId = categoryId;
+        this.variationId = variationId;
+        this.taxId = taxId;
+        this.itemSaleId = itemSaleId;
+        this.name = name;
+        this.image = image;
+        this.SKU = SKU;
+        this.unit = unit;
+        this.price = price;
+        this.stock = stock;
+    }
 }

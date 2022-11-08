@@ -48,4 +48,15 @@ public class Sales implements Serializable {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    public Sales(Set<ItemSales> itemSaleId, Customers customerId, Set<Discounts> discountsId,
+                 String notes, PaymentType paymentType, BigDecimal subtotal, BigDecimal total, Date date) {
+        this.itemSaleId = itemSaleId;
+        this.customerId = customerId;
+        this.discountsId = discountsId;
+        this.notes = notes;
+        this.paymentType = paymentType;
+        this.subtotal = subtotal;
+        this.total = total;
+        this.date = date;
+    }
 }

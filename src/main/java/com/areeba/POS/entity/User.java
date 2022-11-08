@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,4 +29,13 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(long Id, String password) {
+        this.Id = Id;
+        this.password = password;
+    }
 }

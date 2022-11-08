@@ -1,94 +1,138 @@
 package com.areeba.POS.services.Impl;
 
-import com.areeba.POS.dto.BusinessDTO;
+import com.areeba.POS.common.ErrorResponseApisEnum;
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.UserDTO;
-import com.areeba.POS.entity.Business;
 import com.areeba.POS.entity.User;
-import com.areeba.POS.repository.BusinessRepository;
 import com.areeba.POS.repository.UserRepository;
 import com.areeba.POS.services.UserService;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.BadRequestException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private static final Logger log = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    private BusinessRepository businessRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public void createUser(UserDTO userDTO) throws Exception {
+    public User createUser(UserDTO userDTO) {
+        BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
         User user = new User();
+        user.setBusinessId(userDTO.getBusinessId());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        userRepository.save(user);
+        user.setPassword(pwEncoder.encode(userDTO.getPassword()));
+        return userRepository.save(user);
     }
 
     @Override
-    public void createBusiness(BusinessDTO businessDTO) throws Exception {
-        Business business = new Business();
-        business.setUserId(businessDTO.getUserId());
-        business.setType(businessDTO.getType());
-        business.setCategory(businessDTO.getCategory());
-        business.setName(businessDTO.getName());
-        business.setFirstName(businessDTO.getFirstName());
-        business.setLastName(businessDTO.getLastName());
-        business.setAddress(businessDTO.getAddress());
-        business.setCity(businessDTO.getCity());
-        business.setPostalCode(businessDTO.getPostalCode());
-        businessRepository.save(business);
+    public RestCommonResponse updateUser(long Id, UserDTO userDTO) {
+        BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+        if (this.userRepository.findById(Id) != null) {
+            User existingUser = this.userRepository.findById(Id);
+            existingUser.setEmail(userDTO.getEmail());
+            existingUser.setPassword(pwEncoder.encode(userDTO.getPassword()));
+            User updatedUser = this.userRepository.save(existingUser);
+            return new RestCommonResponse(true, new User(
+                    updatedUser.getEmail(),
+                    updatedUser.getPassword()
+            ));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
     }
 
     @Override
-    public void updateUser(UserDTO userDTO, long Id) {
-        User userById = userRepository.findById(Id);
-        userById.setEmail(userDTO.getEmail());
-        userById.setPassword(userDTO.getPassword());
-        userRepository.save(userById);
+    public RestCommonResponse updatePassword(long Id, String password) {
+        BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+        if (this.userRepository.findById(Id) != null) {
+            User existingUser = this.userRepository.findById(Id);
+            existingUser.setPassword(pwEncoder.encode(password));
+            User updatedUser = this.userRepository.save(existingUser);
+            return new RestCommonResponse(true, new User(updatedUser.getId(), updatedUser.getPassword()));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
     }
 
     @Override
-    public void updateBusiness(BusinessDTO businessDTO, long Id) {
-        Business businessById = businessRepository.findById(Id);
-        businessById.setUserId(businessDTO.getUserId());
-        businessById.setType(businessDTO.getType());
-        businessById.setCategory(businessDTO.getCategory());
-        businessById.setName(businessDTO.getName());
-        businessById.setFirstName(businessDTO.getFirstName());
-        businessById.setLastName(businessDTO.getLastName());
-        businessById.setAddress(businessDTO.getAddress());
-        businessById.setCity(businessDTO.getCity());
-        businessById.setPostalCode(businessDTO.getPostalCode());
-        businessRepository.save(businessById);
+    public RestCommonResponse updatePasswordEmail(String email, String password) {
+        BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+        if (this.userRepository.findByEmail(email) != null) {
+            User existingUser = this.userRepository.findByEmail(email);
+            existingUser.setPassword(pwEncoder.encode(password));
+            User updatedUser = this.userRepository.save(existingUser);
+            return new RestCommonResponse(true, new User(updatedUser.getEmail(), updatedUser.getPassword()));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
     }
 
     @Override
-    public void deleteUser(long Id) {
-        this.userRepository.deleteById(Id);
+    public RestCommonResponse activateUser(String email) {
+        User userAuth = this.userRepository.findByEmail(email);
+        if (userAuth != null) {
+            return new RestCommonResponse(true, this.userRepository.save(userAuth));
+        } else {
+            return new RestCommonResponse(false, new Exception("Error, Could not activate user"));
+        }
     }
 
     @Override
-    public void deleteBusiness(long Id) {
-        businessRepository.deleteById(Id);
+    public RestCommonResponse deleteUser(long Id) {
+        if (this.userRepository.findById(Id) != null) {
+            this.userRepository.deleteById(Id);
+            return new RestCommonResponse(true, "Deleted");
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public RestCommonResponse saveUser(UserDTO userDTO, String email) {
+        BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+        User userAuth = this.userRepository.findByEmail(email);
+        if (userAuth == null) {
+            log.info("Saving new user to the database");
+            userDTO.setPassword(pwEncoder.encode(userDTO.getPassword()));
+            return new RestCommonResponse(true, this.userRepository.save(userAuth));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.AlreadyRegistered)));
+        }
     }
 
     @Override
     public User findById(long Id) {
-        return userRepository.findById(Id);
+        log.info("Fetching user");
+        return this.userRepository.findById(Id);
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public User findByEmail(String email) {
+        log.info("Fetching user");
+        return this.userRepository.findByEmail(email);
+    }
+
+    @Override
+    public RestCommonResponse getAll() {
+        log.info("Fetching All Users");
+        List<User> user = this.userRepository.findAll();
+        return new RestCommonResponse(true, user);
     }
 }

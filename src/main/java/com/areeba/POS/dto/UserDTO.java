@@ -1,6 +1,7 @@
 package com.areeba.POS.dto;
 
 import com.areeba.POS.entity.Business;
+import com.areeba.POS.entity.User;
 import lombok.*;
 
 @NoArgsConstructor

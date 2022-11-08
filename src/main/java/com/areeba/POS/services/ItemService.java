@@ -1,22 +1,23 @@
 package com.areeba.POS.services;
 
+import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.ItemDTO;
 import com.areeba.POS.entity.Items;
 
-import java.util.List;
-
 public interface ItemService {
 
-    void createItem(ItemDTO itemDTO);
+    Items createItem(ItemDTO itemDTO);
 
-    void updateItem(ItemDTO itemDTO, long Id);
+    RestCommonResponse updateItem(long Id, ItemDTO itemDTO);
 
-    void deleteItem(long Id);
+    RestCommonResponse deleteItem(long Id);
+
+    RestCommonResponse saveItem(ItemDTO itemDTO, String name);
 
     Items findById(long Id);
 
     Items findByName(String name);
 
-    List<Items> getAll();
+    RestCommonResponse getAll();
 
 }

@@ -30,4 +30,9 @@ public class Taxes implements Serializable {
     @Column(name = "percentage", nullable = false)
     private BigDecimal percentage;
 
+    public Taxes(Items itemId, String name, BigDecimal percentage) {
+        this.itemId = itemId;
+        this.name = name;
+        this.percentage = percentage;
+    }
 }

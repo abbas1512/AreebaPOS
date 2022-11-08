@@ -32,4 +32,10 @@ public class Discounts implements Serializable {
     @Column(name = "amount", nullable = false)
     private double amount;
 
+    public Discounts(Sales saleId, String name, Type type, double amount) {
+        this.saleId = saleId;
+        this.name = name;
+        this.type = type;
+        this.amount = amount;
+    }
 }
