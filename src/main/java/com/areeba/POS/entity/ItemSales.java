@@ -28,24 +28,12 @@ public class ItemSales implements Serializable {
     @JoinColumn(name = "saleId", nullable = false)
     private Sales saleId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "SKU", nullable = true)
-    private String SKU;
-
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
-
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    public ItemSales(Items itemId, Sales saleId, String name, String SKU, BigDecimal price, int quantity) {
+    public ItemSales(Items itemId, Sales saleId, int quantity) {
         this.itemId = itemId;
         this.saleId = saleId;
-        this.name = name;
-        this.SKU = SKU;
-        this.price = price;
         this.quantity = quantity;
     }
 }

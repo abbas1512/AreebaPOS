@@ -1,11 +1,92 @@
 package com.areeba.POS.services.Impl;
 
+import com.areeba.POS.common.ErrorResponseApisEnum;
+import com.areeba.POS.common.RestCommonResponse;
+import com.areeba.POS.dto.ItemSaleDTO;
+import com.areeba.POS.dto.SaleDTO;
+import com.areeba.POS.entity.ItemSales;
+import com.areeba.POS.entity.Sales;
+import com.areeba.POS.repository.ItemSalesRepository;
+import com.areeba.POS.repository.SaleRepository;
 import com.areeba.POS.services.SaleService;
+import org.junit.platform.commons.logging.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.ws.rs.BadRequestException;
+import java.util.List;
+import java.util.logging.Logger;
 
 @Service("SaleService")
 public class SaleServiceImpl implements SaleService {
 
+    @Autowired
+    private final SaleRepository saleRepository;
+    @Autowired
+    private final ItemSalesRepository itemSalesRepository;
+    private static final Logger log = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
 
+    public SaleServiceImpl(SaleRepository saleRepository, ItemSalesRepository itemSalesRepository) {
+        this.saleRepository = saleRepository;
+        this.itemSalesRepository = itemSalesRepository;
+    }
 
+    @Override
+    public ItemSales createItemSale(ItemSaleDTO itemSaleDTO) {
+        ItemSales itemSale = new ItemSales();
+        itemSale.setItemId(itemSaleDTO.getItemId());
+        itemSale.setSaleId(itemSaleDTO.getSaleId());
+        itemSale.setQuantity(itemSaleDTO.getQuantity());
+        return itemSalesRepository.save(itemSale);
+    }
+
+    @Override
+    public Sales createSale(SaleDTO saleDTO) {
+        Sales sale = new Sales();
+        sale.setItemSaleId(saleDTO.getItemSaleId());
+        sale.setCustomerId(saleDTO.getCustomerId());
+        sale.setDiscountsId(saleDTO.getDiscountsId());
+        sale.setNotes(saleDTO.getNotes());
+        sale.setPaymentType(saleDTO.getPaymentType());
+        sale.setSubtotal(sale.getSubtotal());
+        sale.setTotal(sale.getTotal());
+        sale.setDate(saleDTO.getDate());
+        return saleRepository.save(sale);
+    }
+
+    @Override
+    public RestCommonResponse cancelSale(long Id) {
+        if (this.saleRepository.findById(Id) != null) {
+            this.saleRepository.deleteById(Id);
+            return new RestCommonResponse(true, "Cancelled");
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
+    }
+
+    @Override
+    public RestCommonResponse confirmSale(SaleDTO saleDTO, long Id) {
+        Sales sale = this.saleRepository.findById(Id);
+        if (sale == null) {
+            log.info("Sale has been confirmed");
+            return new RestCommonResponse(true, this.saleRepository.save(sale));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.AlreadyRegistered)));
+        }
+    }
+
+    @Override
+    public Sales getSale(long Id) {
+        log.info("Fetching Sale");
+        return this.saleRepository.findById(Id);
+    }
+
+    @Override
+    public RestCommonResponse getAllSales() {
+        log.info("Fetching All Sales");
+        List<Sales> sales = this.saleRepository.findAll();
+        return new RestCommonResponse(true, sales);
+    }
 }

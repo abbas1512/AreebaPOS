@@ -16,9 +16,6 @@ public class ItemSaleDTO {
     private long Id;
     private Items itemId;
     private Sales saleId;
-    private String name;
-    private String SKU;
-    private BigDecimal price;
     private int quantity;
 
 }
