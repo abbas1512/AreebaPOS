@@ -93,7 +93,7 @@ public class DiscountServicesImpl implements DiscountService {
 
     @Override
     public RestCommonResponse getAll() {
-        log.info("Fetching All Customers");
+        log.info("Fetching All Discounts");
         List<Discounts> discounts = this.discountRepository.findAll();
         return new RestCommonResponse(true, discounts);
     }

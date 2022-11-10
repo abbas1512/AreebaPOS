@@ -1,7 +1,9 @@
 package com.areeba.POS.services;
 
 import com.areeba.POS.common.RestCommonResponse;
+import com.areeba.POS.dto.BusinessDTO;
 import com.areeba.POS.dto.UserDTO;
+import com.areeba.POS.entity.Business;
 import com.areeba.POS.entity.User;
 
 public interface UserService {
@@ -20,10 +22,26 @@ public interface UserService {
 
     RestCommonResponse saveUser(UserDTO userDTO, String email);
 
-    User findById(long Id);
+    Business createBusiness(BusinessDTO businessDTO);
 
-    User findByEmail(String email);
+    RestCommonResponse updateBusiness(long Id, BusinessDTO businessDTO);
 
-    RestCommonResponse getAll();
+    RestCommonResponse deleteBusiness(long Id);
+
+    RestCommonResponse saveBusiness(BusinessDTO businessDTO, String name);
+
+    RestCommonResponse assignBusinessToUser(long userId, long businessId);
+
+    User getUser(long userId);
+
+    User getUserEmail(String email);
+
+    RestCommonResponse getAllUsers();
+
+    Business getBusiness(long businessId);
+
+    Business getBusinessName(String name);
+
+    RestCommonResponse getAllBusiness();
 
 }

@@ -2,8 +2,11 @@ package com.areeba.POS.services.Impl;
 
 import com.areeba.POS.common.ErrorResponseApisEnum;
 import com.areeba.POS.common.RestCommonResponse;
+import com.areeba.POS.dto.BusinessDTO;
 import com.areeba.POS.dto.UserDTO;
+import com.areeba.POS.entity.Business;
 import com.areeba.POS.entity.User;
+import com.areeba.POS.repository.BusinessRepository;
 import com.areeba.POS.repository.UserRepository;
 import com.areeba.POS.services.UserService;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -20,10 +23,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final BusinessRepository businessRepository;
     private static final Logger log = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BusinessRepository businessRepository) {
         this.userRepository = userRepository;
+        this.businessRepository = businessRepository;
     }
 
     @Override
@@ -118,21 +124,118 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(long Id) {
-        log.info("Fetching user");
-        return this.userRepository.findById(Id);
+    public Business createBusiness(BusinessDTO businessDTO) {
+        Business business = new Business();
+        business.setUserId(businessDTO.getUserId());
+        business.setItemId(businessDTO.getItemId());
+        business.setName(businessDTO.getName());
+        business.setType(businessDTO.getType());
+        business.setCategory(businessDTO.getCategory());
+        business.setAddress(businessDTO.getAddress());
+        business.setCity(businessDTO.getCity());
+        business.setPostalCode(businessDTO.getPostalCode());
+        return businessRepository.save(business);
     }
 
     @Override
-    public User findByEmail(String email) {
+    public RestCommonResponse updateBusiness(long Id, BusinessDTO businessDTO) {
+        if (this.businessRepository.findById(Id) != null) {
+            Business businessById = this.businessRepository.findById(Id);
+            businessById.setUserId(businessDTO.getUserId());
+            businessById.setItemId(businessDTO.getItemId());
+            businessById.setName(businessDTO.getName());
+            businessById.setType(businessDTO.getType());
+            businessById.setCategory(businessDTO.getCategory());
+            businessById.setAddress(businessDTO.getAddress());
+            businessById.setCity(businessDTO.getCity());
+            businessById.setPostalCode(businessDTO.getPostalCode());
+            Business updatedBusiness = this.businessRepository.save(businessById);
+            return new RestCommonResponse(true, new Business(
+                    updatedBusiness.getUserId(),
+                    updatedBusiness.getItemId(),
+                    updatedBusiness.getName(),
+                    updatedBusiness.getType(),
+                    updatedBusiness.getCategory(),
+                    updatedBusiness.getAddress(),
+                    updatedBusiness.getCity(),
+                    updatedBusiness.getPostalCode()
+            ));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
+    }
+
+    @Override
+    public RestCommonResponse deleteBusiness(long Id) {
+        if (this.businessRepository.findById(Id) != null) {
+            this.businessRepository.deleteById(Id);
+            return new RestCommonResponse(true, "Deleted");
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.DoesntExist)));
+        }
+    }
+
+    @Override
+    public RestCommonResponse saveBusiness(BusinessDTO businessDTO, String name) {
+        Business business = this.businessRepository.findByName(name);
+        if (business == null) {
+            log.info("Saving business to the database");
+            return new RestCommonResponse(true, this.businessRepository.save(business));
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.AlreadyRegistered)));
+        }
+    }
+
+    @Override
+    public RestCommonResponse assignBusinessToUser(long userId, long businessId) {
+        if (this.userRepository.findById(userId) != null) {
+            User user = this.userRepository.findById(userId);
+            Business business = this.businessRepository.findById(businessId);
+            user.setBusinessId(business);
+            return new RestCommonResponse(true, "Business Assigned");
+        } else {
+            return new RestCommonResponse(false, ErrorResponseApisEnum.DoesntExist);
+        }
+    }
+
+    @Override
+    public User getUser(long userId) {
+        log.info("Fetching User");
+        return this.userRepository.findById(userId);
+    }
+
+    @Override
+    public User getUserEmail(String email) {
         log.info("Fetching user");
         return this.userRepository.findByEmail(email);
     }
 
     @Override
-    public RestCommonResponse getAll() {
+    public RestCommonResponse getAllUsers() {
         log.info("Fetching All Users");
         List<User> user = this.userRepository.findAll();
         return new RestCommonResponse(true, user);
+    }
+
+    @Override
+    public Business getBusiness(long businessId) {
+        log.info("Fetching Business");
+        return this.businessRepository.findById(businessId);
+    }
+
+    @Override
+    public Business getBusinessName(String name) {
+        log.info("Fetching Business");
+        return this.businessRepository.findByName(name);
+    }
+
+    @Override
+    public RestCommonResponse getAllBusiness() {
+        log.info("Fetching All Business");
+        List<Business> businesses = this.businessRepository.findAll();
+        return new RestCommonResponse(true, businesses);
     }
 }
