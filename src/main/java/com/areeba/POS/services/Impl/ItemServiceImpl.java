@@ -79,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.ItemNotFound)));
         }
     }
 
@@ -90,7 +90,7 @@ public class ItemServiceImpl implements ItemService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.ItemNotFound)));
         }
     }
 
@@ -130,7 +130,7 @@ public class ItemServiceImpl implements ItemService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.ItemNotFound)));
         }
     }
 
@@ -141,7 +141,7 @@ public class ItemServiceImpl implements ItemService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.ItemNotFound)));
         }
     }
 
@@ -166,7 +166,7 @@ public class ItemServiceImpl implements ItemService {
             item.setTaxId((Set<Taxes>) tax);
             return new RestCommonResponse(true, "Tax Assigned");
         } else {
-            return new RestCommonResponse(false, ErrorResponseApisEnum.DoesntExist);
+            return new RestCommonResponse(false, ErrorResponseApisEnum.ItemNotFound);
         }
     }
 

@@ -52,7 +52,7 @@ public class DiscountServicesImpl implements DiscountService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -63,7 +63,7 @@ public class DiscountServicesImpl implements DiscountService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 

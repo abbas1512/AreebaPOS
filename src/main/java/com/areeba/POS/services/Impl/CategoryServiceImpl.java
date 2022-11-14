@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 

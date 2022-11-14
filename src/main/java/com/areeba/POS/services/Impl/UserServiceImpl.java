@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.InvalidUser)));
         }
     }
 
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
             return new RestCommonResponse(true, new User(updatedUser.getId(), updatedUser.getPassword()));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.InvalidUser)));
         }
     }
 
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
             return new RestCommonResponse(true, new User(updatedUser.getEmail(), updatedUser.getPassword()));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.InvalidUser)));
         }
     }
 
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.InvalidUser)));
         }
     }
 

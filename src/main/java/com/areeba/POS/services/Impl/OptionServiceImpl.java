@@ -63,7 +63,7 @@ public class OptionServiceImpl implements OptionService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -82,7 +82,7 @@ public class OptionServiceImpl implements OptionService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -93,7 +93,7 @@ public class OptionServiceImpl implements OptionService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -104,7 +104,7 @@ public class OptionServiceImpl implements OptionService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 

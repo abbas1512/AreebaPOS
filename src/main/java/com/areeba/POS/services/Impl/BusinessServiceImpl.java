@@ -71,7 +71,7 @@ public class BusinessServiceImpl implements BusinessService {
             ));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -82,7 +82,7 @@ public class BusinessServiceImpl implements BusinessService {
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
@@ -106,7 +106,7 @@ public class BusinessServiceImpl implements BusinessService {
             user.setBusinessId(business);
             return new RestCommonResponse(true, "Business Assigned");
         } else {
-            return new RestCommonResponse(false, ErrorResponseApisEnum.DoesntExist);
+            return new RestCommonResponse(false, ErrorResponseApisEnum.DoesNotExist);
         }
     }
 

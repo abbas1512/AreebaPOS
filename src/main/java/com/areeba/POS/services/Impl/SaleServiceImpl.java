@@ -61,7 +61,7 @@ public class SaleServiceImpl implements SaleService {
             return new RestCommonResponse(true, "Cancelled");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.DoesntExist)));
+                    (ErrorResponseApisEnum.DoesNotExist)));
         }
     }
 
