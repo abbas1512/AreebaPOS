@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service("DiscountServices")
-public class DiscountServicesImpl implements DiscountService {
+public class DiscountServiceImpl implements DiscountService {
 
     @Autowired
     private final DiscountRepository discountRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(DiscountServicesImpl.class);
+    private static final Logger log = (Logger) LoggerFactory.getLogger(DiscountServiceImpl.class);
 
-    public DiscountServicesImpl(DiscountRepository discountRepository) {
+    public DiscountServiceImpl(DiscountRepository discountRepository) {
         this.discountRepository = discountRepository;
     }
 

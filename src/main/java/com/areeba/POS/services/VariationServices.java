@@ -4,7 +4,6 @@ import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.VariationDTO;
 import com.areeba.POS.entity.Variations;
 
-import java.util.List;
 
 public interface VariationServices {
 

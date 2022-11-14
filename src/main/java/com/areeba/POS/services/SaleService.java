@@ -8,7 +8,9 @@ import com.areeba.POS.entity.Sales;
 
 public interface SaleService {
 
-    ItemSales createItemSale(ItemSaleDTO itemSaleDTO);
+    ItemSales addItem(ItemSaleDTO itemSaleDTO);
+
+    RestCommonResponse removeItem(long Id);
 
     Sales createSale(SaleDTO saleDTO);
 

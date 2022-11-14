@@ -1,6 +1,5 @@
 package com.areeba.POS.entity;
 
-import com.areeba.POS.dto.VariationDTO;
 import com.areeba.POS.enums.Unit;
 import lombok.*;
 

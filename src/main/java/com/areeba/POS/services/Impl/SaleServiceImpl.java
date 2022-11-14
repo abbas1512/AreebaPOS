@@ -32,12 +32,23 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public ItemSales createItemSale(ItemSaleDTO itemSaleDTO) {
+    public ItemSales addItem(ItemSaleDTO itemSaleDTO) {
         ItemSales itemSale = new ItemSales();
         itemSale.setItemId(itemSaleDTO.getItemId());
         itemSale.setSaleId(itemSaleDTO.getSaleId());
         itemSale.setQuantity(itemSaleDTO.getQuantity());
         return itemSalesRepository.save(itemSale);
+    }
+
+    @Override
+    public RestCommonResponse removeItem(long Id) {
+        if (this.itemSalesRepository.findById(Id) != null) {
+            this.itemSalesRepository.deleteById(Id);
+            return new RestCommonResponse(true, "Removed");
+        } else {
+            return new RestCommonResponse(false, new BadRequestException(String.valueOf
+                    (ErrorResponseApisEnum.ItemNotFound)));
+        }
     }
 
     @Override

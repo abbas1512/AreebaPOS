@@ -3,7 +3,6 @@ package com.areeba.POS.services;
 import com.areeba.POS.common.RestCommonResponse;
 import com.areeba.POS.dto.OptionDTO;
 import com.areeba.POS.dto.OptionVariationDTO;
-import com.areeba.POS.dto.VariationDTO;
 import com.areeba.POS.entity.OptionVariations;
 import com.areeba.POS.entity.Options;
 
