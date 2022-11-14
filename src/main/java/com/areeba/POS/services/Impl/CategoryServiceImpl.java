@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     public RestCommonResponse saveCategory(CategoryDTO categoryDTO, String name) {
         Category category = this.categoryRepository.findByName(name);
         if (category == null) {
-            log.info("Saving business to the database");
+            log.info("Saving category to the database");
             return new RestCommonResponse(true, this.categoryRepository.save(category));
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
@@ -75,19 +75,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(long Id) {
-        log.info("Fetching Category");
+        log.info("Fetching category");
         return this.categoryRepository.findById(Id);
     }
 
     @Override
     public Category findByName(String name) {
-        log.info("Fetching Category");
+        log.info("Fetching category");
         return this.categoryRepository.findByName(name);
     }
 
     @Override
     public RestCommonResponse getAll() {
-        log.info("Fetching All Category");
+        log.info("Fetching all Categories");
         List<Category> category = this.categoryRepository.findAll();
         return new RestCommonResponse(true, category);
     }

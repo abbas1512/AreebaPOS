@@ -1,14 +1,13 @@
 package com.areeba.POS.services;
 
 import com.areeba.POS.common.RestCommonResponse;
-import com.areeba.POS.dto.BusinessDTO;
 import com.areeba.POS.dto.UserDTO;
-import com.areeba.POS.entity.Business;
 import com.areeba.POS.entity.User;
+import com.mchange.util.AlreadyExistsException;
 
 public interface UserService {
 
-    User createUser(UserDTO userDTO);
+    User registerUser(UserDTO userDTO) throws AlreadyExistsException;
 
     RestCommonResponse updateUser(long Id, UserDTO userDTO);
 
@@ -22,26 +21,10 @@ public interface UserService {
 
     RestCommonResponse saveUser(UserDTO userDTO, String email);
 
-    Business createBusiness(BusinessDTO businessDTO);
-
-    RestCommonResponse updateBusiness(long Id, BusinessDTO businessDTO);
-
-    RestCommonResponse deleteBusiness(long Id);
-
-    RestCommonResponse saveBusiness(BusinessDTO businessDTO, String name);
-
-    RestCommonResponse assignBusinessToUser(long userId, long businessId);
-
     User getUser(long userId);
 
     User getUserEmail(String email);
 
     RestCommonResponse getAllUsers();
-
-    Business getBusiness(long businessId);
-
-    Business getBusinessName(String name);
-
-    RestCommonResponse getAllBusiness();
 
 }
