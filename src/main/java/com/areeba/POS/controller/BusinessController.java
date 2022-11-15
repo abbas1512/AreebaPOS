@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class BusinessController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private final BusinessService businessService;
     @Autowired
     private final BusinessServiceImpl businessServiceImpl;
 
-    public BusinessController(AuthenticationManager authenticationManager, BusinessService businessService, BusinessServiceImpl businessServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public BusinessController(BusinessService businessService, BusinessServiceImpl businessServiceImpl) {
         this.businessService = businessService;
         this.businessServiceImpl = businessServiceImpl;
     }

@@ -9,13 +9,13 @@ import com.areeba.POS.entity.Sales;
 import com.areeba.POS.repository.ItemSalesRepository;
 import com.areeba.POS.repository.SaleRepository;
 import com.areeba.POS.services.SaleService;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service("SaleService")
 public class SaleServiceImpl implements SaleService {
@@ -24,7 +24,7 @@ public class SaleServiceImpl implements SaleService {
     private final SaleRepository saleRepository;
     @Autowired
     private final ItemSalesRepository itemSalesRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(SaleServiceImpl.class);
 
     public SaleServiceImpl(SaleRepository saleRepository, ItemSalesRepository itemSalesRepository) {
         this.saleRepository = saleRepository;

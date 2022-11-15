@@ -15,16 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping({"/sale"})
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
 public class SaleController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private final SaleService saleService;
     @Autowired
     private final SaleServiceImpl saleServiceImpl;
 
-    public SaleController(AuthenticationManager authenticationManager, SaleService saleService, SaleServiceImpl saleServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public SaleController(SaleService saleService, SaleServiceImpl saleServiceImpl) {
         this.saleService = saleService;
         this.saleServiceImpl = saleServiceImpl;
     }

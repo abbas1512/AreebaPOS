@@ -7,23 +7,18 @@ import com.areeba.POS.services.CustomerService;
 import com.areeba.POS.services.Impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping({"/customer"})
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
 public class CustomerController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private final CustomerService customerService;
     @Autowired
     private final CategoryServiceImpl categoryServiceImpl;
 
-    public CustomerController(AuthenticationManager authenticationManager, CustomerService customerService, CategoryServiceImpl categoryServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public CustomerController(CustomerService customerService, CategoryServiceImpl categoryServiceImpl) {
         this.customerService = customerService;
         this.categoryServiceImpl = categoryServiceImpl;
     }

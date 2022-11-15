@@ -9,14 +9,14 @@ import com.areeba.POS.entity.*;
 import com.areeba.POS.repository.OptionRepository;
 import com.areeba.POS.repository.OptionVariationRepository;
 import com.areeba.POS.services.OptionService;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Service("OptionService")
 public class OptionServiceImpl implements OptionService {
@@ -25,8 +25,7 @@ public class OptionServiceImpl implements OptionService {
     private final OptionRepository optionRepository;
     @Autowired
     private final OptionVariationRepository optionVariationRepository;
-
-    private static final Logger log = (Logger) LoggerFactory.getLogger(OptionServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(OptionServiceImpl.class);
 
     public OptionServiceImpl(OptionRepository optionRepository, OptionVariationRepository optionVariationRepository) {
         this.optionRepository = optionRepository;

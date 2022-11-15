@@ -22,14 +22,11 @@ import javax.validation.Valid;
 public class UserController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private final UserService userService;
     @Autowired
     private final UserServiceImpl userServiceImpl;
 
-    public UserController(AuthenticationManager authenticationManager, UserService userService, UserServiceImpl userServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public UserController(UserService userService, UserServiceImpl userServiceImpl) {
         this.userService = userService;
         this.userServiceImpl = userServiceImpl;
     }

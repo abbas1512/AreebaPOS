@@ -14,16 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping({"/tax"})
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
 public class TaxController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private final TaxService taxService;
     @Autowired
     private final TaxServiceImpl taxServiceImpl;
 
-    public TaxController(AuthenticationManager authenticationManager, TaxService taxService, TaxServiceImpl taxServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public TaxController(TaxService taxService, TaxServiceImpl taxServiceImpl) {
         this.taxService = taxService;
         this.taxServiceImpl = taxServiceImpl;
     }

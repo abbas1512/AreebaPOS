@@ -7,7 +7,8 @@ import com.areeba.POS.entity.User;
 import com.areeba.POS.repository.UserRepository;
 import com.areeba.POS.services.UserService;
 import com.mchange.util.AlreadyExistsException;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,14 +16,13 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepository userRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;

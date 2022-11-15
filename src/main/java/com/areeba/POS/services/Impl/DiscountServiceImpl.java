@@ -6,20 +6,21 @@ import com.areeba.POS.dto.DiscountDTO;
 import com.areeba.POS.entity.Discounts;
 import com.areeba.POS.repository.DiscountRepository;
 import com.areeba.POS.services.DiscountService;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service("DiscountServices")
 public class DiscountServiceImpl implements DiscountService {
 
     @Autowired
     private final DiscountRepository discountRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(DiscountServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DiscountServiceImpl.class);
 
     public DiscountServiceImpl(DiscountRepository discountRepository) {
         this.discountRepository = discountRepository;

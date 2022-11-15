@@ -6,20 +6,20 @@ import com.areeba.POS.dto.CategoryDTO;
 import com.areeba.POS.entity.Category;
 import com.areeba.POS.repository.CategoryRepository;
 import com.areeba.POS.services.CategoryService;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service("CategoryService")
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private final CategoryRepository categoryRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;

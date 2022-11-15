@@ -6,20 +6,20 @@ import com.areeba.POS.dto.CustomerDTO;
 import com.areeba.POS.entity.Customers;
 import com.areeba.POS.repository.CustomerRepository;
 import com.areeba.POS.services.CustomerService;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service("CustomerService")
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private final CustomerRepository customerRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(CustomerServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DiscountServiceImpl.class);
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;

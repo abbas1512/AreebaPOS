@@ -9,6 +9,4 @@ public interface ItemSalesRepository extends JpaRepository<ItemSales, Long> {
 
     ItemSales findById(long Id);
 
-    ItemSales findByName(String name);
-
 }

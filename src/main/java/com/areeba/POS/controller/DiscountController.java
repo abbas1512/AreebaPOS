@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class DiscountController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private final DiscountService discountService;
     @Autowired
     private final DiscountServiceImpl discountServiceImpl;
 
-    public DiscountController(AuthenticationManager authenticationManager, DiscountService discountService, DiscountServiceImpl discountServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public DiscountController(DiscountService discountService, DiscountServiceImpl discountServiceImpl) {
         this.discountService = discountService;
         this.discountServiceImpl = discountServiceImpl;
     }

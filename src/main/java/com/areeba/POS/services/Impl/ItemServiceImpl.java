@@ -6,20 +6,20 @@ import com.areeba.POS.dto.ItemDTO;
 import com.areeba.POS.entity.*;
 import com.areeba.POS.repository.ItemRepository;
 import com.areeba.POS.services.ItemService;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service("ItemService")
 public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private final ItemRepository itemRepository;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(ItemServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(ItemServiceImpl.class);
 
     public ItemServiceImpl(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;

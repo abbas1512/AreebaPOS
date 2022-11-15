@@ -9,23 +9,18 @@ import com.areeba.POS.services.Impl.OptionServiceImpl;
 import com.areeba.POS.services.OptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping({"/option"})
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
 public class OptionController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private final OptionService optionService;
     @Autowired
     private final OptionServiceImpl optionServiceImpl;
 
-    public OptionController(AuthenticationManager authenticationManager, OptionService optionService, OptionServiceImpl optionServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public OptionController(OptionService optionService, OptionServiceImpl optionServiceImpl) {
         this.optionService = optionService;
         this.optionServiceImpl = optionServiceImpl;
     }
@@ -66,38 +61,38 @@ public class OptionController {
         return this.optionService.saveOption(optionDTO, optionDTO.getName());
     }
 
-    @GetMapping
+    @GetMapping({"/variation"})
     public OptionVariations getVariation(long Id) {
         return this.optionService.getVariation(Id);
     }
 
-    @GetMapping({"/all"})
+    @GetMapping({"/variation/all"})
     public RestCommonResponse getAllVariations() {
         return this.optionService.getAllVariations();
     }
 
-    @GetMapping({"/name"})
+    @GetMapping({"/variation/name"})
     public OptionVariations getVariationName(String name) {
         return this.optionService.getVariationName(name);
     }
 
-    @GetMapping({"/create"})
+    @GetMapping({"/variation/create"})
     public OptionVariations createVariation(OptionVariationDTO optionVariationDTO) {
         return this.optionService.createVariation(optionVariationDTO);
     }
 
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/variation/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     public RestCommonResponse updateVariation(@PathVariable("Id") long Id, @RequestBody OptionVariationDTO optionVariationDTO) {
         return this.optionService.updateVariation(Id, optionVariationDTO);
     }
 
-    @DeleteMapping({"/{Id}"})
+    @DeleteMapping({"/variation/{Id}"})
     public RestCommonResponse deleteVariation(@PathVariable("Id") long Id) {
         return this.optionService.deleteVariation(Id);
     }
 
-    @PostMapping({"/save"})
+    @PostMapping({"/variation/save"})
     public RestCommonResponse saveVariation(@RequestBody OptionVariationDTO optionVariationDTO) {
         return this.optionService.saveVariation(optionVariationDTO, optionVariationDTO.getName());
     }

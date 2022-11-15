@@ -6,21 +6,20 @@ import com.areeba.POS.dto.VariationDTO;
 import com.areeba.POS.entity.Variations;
 import com.areeba.POS.repository.VariationRepository;
 import com.areeba.POS.services.VariationServices;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service("VariationServices")
 public class VariationServiceImpl implements VariationServices {
 
     @Autowired
     private final VariationRepository variationRepository;
-
-    private static final Logger log = (Logger) LoggerFactory.getLogger(VariationServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(VariationServiceImpl.class);
 
     public VariationServiceImpl(VariationRepository variationRepository) {
         this.variationRepository = variationRepository;

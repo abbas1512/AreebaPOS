@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private final CategoryService categoryService;
     @Autowired
     private final CategoryServiceImpl categoryServiceImpl;
 
-    public CategoryController(AuthenticationManager authenticationManager, CategoryService categoryService, CategoryServiceImpl categoryServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public CategoryController(CategoryService categoryService, CategoryServiceImpl categoryServiceImpl) {
         this.categoryService = categoryService;
         this.categoryServiceImpl = categoryServiceImpl;
     }

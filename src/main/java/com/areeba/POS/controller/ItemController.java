@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class ItemController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private final ItemService itemService;
     @Autowired
     private final ItemServiceImpl itemServiceImpl;
 
-    public ItemController(AuthenticationManager authenticationManager, ItemService itemService, ItemServiceImpl itemServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public ItemController(ItemService itemService, ItemServiceImpl itemServiceImpl) {
         this.itemService = itemService;
         this.itemServiceImpl = itemServiceImpl;
     }

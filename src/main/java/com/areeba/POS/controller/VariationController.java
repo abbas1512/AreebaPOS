@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class VariationController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private final VariationServices variationServices;
     @Autowired
     private final VariationServiceImpl variationServicesImpl;
 
-    public VariationController(AuthenticationManager authenticationManager, VariationServices variationServices, VariationServiceImpl variationServiceImpl) {
-        this.authenticationManager = authenticationManager;
+    public VariationController(VariationServices variationServices, VariationServiceImpl variationServiceImpl) {
         this.variationServices = variationServices;
         this.variationServicesImpl = variationServiceImpl;
     }
