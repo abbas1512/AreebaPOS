@@ -1,6 +1,7 @@
 package com.areeba.pos.entity;
 
 import com.areeba.pos.enums.PaymentType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,11 +23,11 @@ public class Sales {
     private long id;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Cart.class, mappedBy = "saleId")
-    @ToString.Exclude
     private Set<Cart> cartId;
 
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = Customers.class)
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private Customers customerId;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Discounts.class, mappedBy = "saleId")
@@ -40,9 +41,11 @@ public class Sales {
     private PaymentType paymentType;
 
     @Column(name = "subtotal", insertable = false)
+    @JsonIgnore
     private Double subtotal;
 
     @Column(name = "total" , insertable = false)
+    @JsonIgnore
     private Double total;
 
     @Column(name = "date", nullable = true)

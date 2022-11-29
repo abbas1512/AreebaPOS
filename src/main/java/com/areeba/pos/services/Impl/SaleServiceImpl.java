@@ -48,6 +48,7 @@ public class SaleServiceImpl implements SaleService {
     public Cart addItem(CartDTO cartDTO) {
         Cart cart = new Cart();
         cart.setItemId(itemRepository.findById(cartDTO.getItemId()));
+        cart.setSaleId((Sales)cartRepository.findById(cartDTO.getSaleId()));
         cart.setQuantity(cartDTO.getQuantity());
         cart.setItemTotal(cartDTO.getItemTotal());
         return cartRepository.save(cart);
@@ -68,11 +69,10 @@ public class SaleServiceImpl implements SaleService {
     public Sales createSale(SaleDTO saleDTO) {
         Sales sale = new Sales();
         sale.setCustomerId(customerRepository.findById(saleDTO.getCustomerId()));
-        sale.setCartId(cartRepository.findById(saleDTO.getCartId()));
         sale.setDiscountsId(saleDTO.getDiscountsId());
         sale.setNotes(saleDTO.getNotes());
         sale.setPaymentType(saleDTO.getPaymentType());
-        sale.setSubtotal(saleDTO.getSubtotal());
+        sale.setSubtotal(saleDTO.getSubtotal(cartRepository.findById(saleDTO.getCartId())));
         sale.setTotal(saleDTO.getTotal());
         sale.setDate(saleDTO.getDate());
         return saleRepository.save(sale);
