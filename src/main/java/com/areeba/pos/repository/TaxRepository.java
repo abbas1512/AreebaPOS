@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaxRepository extends JpaRepository<Taxes, Long> {
 
-    Taxes findById(long Id);
+    Taxes findById(long id);
 
     Taxes findByName(String name);
 

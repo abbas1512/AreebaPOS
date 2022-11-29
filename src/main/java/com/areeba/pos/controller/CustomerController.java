@@ -4,7 +4,6 @@ import com.areeba.pos.common.RestCommonResponse;
 import com.areeba.pos.dto.CustomerDTO;
 import com.areeba.pos.entity.Customers;
 import com.areeba.pos.services.CustomerService;
-import com.areeba.pos.services.Impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +15,10 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
-    @Autowired
-    private CategoryServiceImpl categoryServiceImpl;
 
-    @GetMapping
-    public Customers getCustomer(long Id) {
-        return this.customerService.findById(Id);
+    @GetMapping({"/id/{id}"})
+    public Customers getCustomer(@PathVariable long id) {
+        return this.customerService.findById(id);
     }
 
     @GetMapping({"/all"})
@@ -29,29 +26,24 @@ public class CustomerController {
         return this.customerService.getAll();
     }
 
-    @GetMapping({"/name"})
-    public Customers getCustomerName(String name) {
-        return this.customerService.findByName(name);
+    @GetMapping({"/phoneNumber/{phoneNumber}"})
+    public Customers getCustomerPhone(@PathVariable String phoneNumber) {
+        return this.customerService.findByNumber(phoneNumber);
     }
 
     @PostMapping({"/create"})
-    public Customers createCustomer(CustomerDTO customerDTO) {
+    public Customers createCustomer(@RequestBody CustomerDTO customerDTO) {
         return this.customerService.createCustomer(customerDTO);
     }
 
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/update/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updateCustomer(@PathVariable("Id") long Id, @RequestBody CustomerDTO customerDTO) {
-        return this.customerService.updateCustomer(Id, customerDTO);
+    public RestCommonResponse updateCustomer(@PathVariable("id") long id, @RequestBody CustomerDTO customerDTO) {
+        return this.customerService.updateCustomer(id, customerDTO);
     }
 
-    @DeleteMapping({"/{Id}"})
-    public RestCommonResponse deleteCustomer(@PathVariable("Id") long Id) {
-        return this.customerService.deleteCustomer(Id);
-    }
-
-    @PostMapping({"/save"})
-    public RestCommonResponse saveCustomer(@RequestBody CustomerDTO customerDTO) {
-        return this.customerService.saveCustomer(customerDTO, customerDTO.getName());
+    @DeleteMapping({"/delete/{id}"})
+    public RestCommonResponse deleteCustomer(@PathVariable("id") long id) {
+        return this.customerService.deleteCustomer(id);
     }
 }

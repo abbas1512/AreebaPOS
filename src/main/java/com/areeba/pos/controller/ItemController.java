@@ -1,19 +1,22 @@
 package com.areeba.pos.controller;
 
 import com.areeba.pos.common.RestCommonResponse;
+import com.areeba.pos.dto.CategoryDTO;
 import com.areeba.pos.dto.ItemDTO;
+import com.areeba.pos.entity.Category;
 import com.areeba.pos.entity.Items;
 import com.areeba.pos.services.Impl.ItemServiceImpl;
 import com.areeba.pos.services.ItemService;
+import com.mchange.util.AlreadyExistsException;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Api
 @RestController
 @RequestMapping({"/item"})
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
-@Api(tags = "item controller")
 public class ItemController {
 
     @Autowired
@@ -22,9 +25,9 @@ public class ItemController {
     @Autowired
     private ItemServiceImpl itemServiceImpl;
 
-    @GetMapping
-    public Items getItem(long Id) {
-        return this.itemService.getItem(Id);
+    @GetMapping({"/id/{id}"})
+    public Items getItem(@PathVariable long id) {
+        return this.itemService.getItem(id);
     }
 
     @GetMapping({"/all"})
@@ -32,29 +35,30 @@ public class ItemController {
         return this.itemService.getAll();
     }
 
-    @GetMapping({"/name"})
-    public Items getItemName(String name) {
+    @GetMapping({"/name/{name}"})
+    public Items getItemName(@PathVariable String name) {
         return this.itemService.getItemName(name);
     }
 
+    @GetMapping({"/category/{category}"})
+    public Items getItemCategory(@PathVariable String category) {
+        return this.itemService.getItemCategory(category);
+    }
+
     @PostMapping({"/create"})
-    public Items createItem(ItemDTO itemDTO) {
+    public Items createItem(@RequestBody ItemDTO itemDTO) {
         return this.itemService.createItem(itemDTO);
     }
 
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/update/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updateItem(@PathVariable("Id") long Id, @RequestBody ItemDTO itemDTO) {
-        return this.itemService.updateItem(Id, itemDTO);
+    public RestCommonResponse updateItem(@PathVariable("id") long id, @RequestBody ItemDTO itemDTO) {
+        return this.itemService.updateItem(id, itemDTO);
     }
 
-    @DeleteMapping({"/{Id}"})
-    public RestCommonResponse deleteItem(@PathVariable("Id") long Id) {
-        return this.itemService.deleteItem(Id);
+    @DeleteMapping({"/delete/{id}"})
+    public RestCommonResponse deleteItem(@PathVariable("id") long id) {
+        return this.itemService.deleteItem(id);
     }
 
-    @PostMapping({"/save"})
-    public RestCommonResponse saveItem(@RequestBody ItemDTO itemDTO) {
-        return this.itemService.saveItem(itemDTO, itemDTO.getName());
-    }
 }

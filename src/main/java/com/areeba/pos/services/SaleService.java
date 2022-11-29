@@ -1,24 +1,24 @@
 package com.areeba.pos.services;
 
 import com.areeba.pos.common.RestCommonResponse;
-import com.areeba.pos.dto.ItemSaleDTO;
+import com.areeba.pos.dto.CartDTO;
 import com.areeba.pos.dto.SaleDTO;
-import com.areeba.pos.entity.ItemSales;
+import com.areeba.pos.entity.Cart;
 import com.areeba.pos.entity.Sales;
 
 public interface SaleService {
 
-    ItemSales addItem(ItemSaleDTO itemSaleDTO);
+    Cart addItem(CartDTO cartDTO);
 
-    RestCommonResponse removeItem(long Id);
+    RestCommonResponse removeItem(long cartId);
 
     Sales createSale(SaleDTO saleDTO);
 
-    RestCommonResponse cancelSale(long Id);
+    RestCommonResponse cancelSale(long id);
 
-    RestCommonResponse confirmSale(SaleDTO saleDTO, long Id);
+    Sales getSale(long id);
 
-    Sales getSale(long Id);
+    Cart viewCart(long cartId);
 
     RestCommonResponse getAllSales();
 

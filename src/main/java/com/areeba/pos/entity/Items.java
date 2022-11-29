@@ -1,11 +1,11 @@
 package com.areeba.pos.entity;
 
 import com.areeba.pos.enums.Unit;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Blob;
 import java.util.Set;
 
@@ -20,25 +20,19 @@ public class Items implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
+    @Column(name = "id")
+    private long id;
+
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Business.class)
+    @JoinColumn(name = "business_id", nullable = false)
+    @JsonIgnore
+    private Business businessId;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Taxes.class, mappedBy = "itemId")
     private Set<Taxes> taxId;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = ItemSales.class, mappedBy = "itemId")
-    private Set<ItemSales> itemSaleId;
-
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Business.class)
-    @JoinColumn(name = "businessId", nullable = false)
-    private Business businessId;
-
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Category.class)
-    @JoinColumn(name = "categoryId", nullable = false)
-    private Category categoryId;
-
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Variations.class , mappedBy = "itemId")
-    private Set<Variations> variationId;
+    @Column(name = "category")
+    private String category;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -53,18 +47,16 @@ public class Items implements Serializable {
     private Unit unit;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private float price;
 
     @Column(name = "stock", nullable = false)
     private int stock;
 
-    public Items(Business businessId, Category categoryId, Set<Variations> variationId, Set<Taxes> taxId,
-                 Set<ItemSales> itemSaleId, String name, Blob image, String SKU, Unit unit, BigDecimal price, int stock) {
+    public Items(Business businessId, Set<Taxes> taxId, String category,
+                 String name, Blob image, String SKU, Unit unit, float price, int stock) {
         this.businessId = businessId;
-        this.categoryId = categoryId;
-        this.variationId = variationId;
         this.taxId = taxId;
-        this.itemSaleId = itemSaleId;
+        this.category = category;
         this.name = name;
         this.image = image;
         this.SKU = SKU;
@@ -72,4 +64,5 @@ public class Items implements Serializable {
         this.price = price;
         this.stock = stock;
     }
+
 }

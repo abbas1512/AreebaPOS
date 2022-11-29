@@ -10,6 +10,7 @@ import com.mchange.util.AlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,6 @@ public class UserServiceImpl implements UserService {
         }
         BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
         User user = new User();
-        user.setBusinessId(userDTO.getBusinessId());
         user.setEmail(userDTO.getEmail());
         user.setPassword(pwEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
@@ -45,10 +45,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestCommonResponse updateUser(long Id, UserDTO userDTO) {
+    public RestCommonResponse updateUser(long id, UserDTO userDTO) {
         BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
-        if (this.userRepository.findById(Id) != null) {
-            User existingUser = this.userRepository.findById(Id);
+        if (this.userRepository.findById(id) != null) {
+            User existingUser = this.userRepository.findById(id);
             existingUser.setEmail(userDTO.getEmail());
             existingUser.setPassword(pwEncoder.encode(userDTO.getPassword()));
             User updatedUser = this.userRepository.save(existingUser);
@@ -63,10 +63,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestCommonResponse updatePassword(long Id, String password) {
+    public RestCommonResponse updatePassword(long id, String password) {
         BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
-        if (this.userRepository.findById(Id) != null) {
-            User existingUser = this.userRepository.findById(Id);
+        if (this.userRepository.findById(id) != null) {
+            User existingUser = this.userRepository.findById(id);
             existingUser.setPassword(pwEncoder.encode(password));
             User updatedUser = this.userRepository.save(existingUser);
             return new RestCommonResponse(true, new User(updatedUser.getId(), updatedUser.getPassword()));
@@ -91,19 +91,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestCommonResponse activateUser(String email) {
-        User userAuth = this.userRepository.findByEmail(email);
-        if (userAuth != null) {
-            return new RestCommonResponse(true, this.userRepository.save(userAuth));
-        } else {
-            return new RestCommonResponse(false, new Exception("Error, Could not activate user"));
-        }
-    }
-
-    @Override
-    public RestCommonResponse deleteUser(long Id) {
-        if (this.userRepository.findById(Id) != null) {
-            this.userRepository.deleteById(Id);
+    public RestCommonResponse deleteUser(long id) {
+        if (this.userRepository.findById(id) != null) {
+            this.userRepository.deleteById(id);
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
@@ -112,23 +102,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RestCommonResponse saveUser(UserDTO userDTO, String email) {
-        BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
-        User userAuth = this.userRepository.findByEmail(email);
-        if (userAuth == null) {
-            log.info("Saving new user to the database");
-            userDTO.setPassword(pwEncoder.encode(userDTO.getPassword()));
-            return new RestCommonResponse(true, this.userRepository.save(userAuth));
-        } else {
-            return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.AlreadyRegistered)));
-        }
-    }
-
-    @Override
-    public User getUser(long userId) {
+    public User getUser(long id) {
         log.info("Fetching User");
-        return this.userRepository.findById(userId);
+        return this.userRepository.findById(id);
     }
 
     @Override
@@ -140,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestCommonResponse getAllUsers() {
         log.info("Fetching All Users");
-        List<User> user = this.userRepository.findAll();
+        List<User> user = this.userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
         return new RestCommonResponse(true, user);
     }
 }

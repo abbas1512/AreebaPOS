@@ -8,6 +8,7 @@ import com.areeba.pos.repository.CustomerRepository;
 import com.areeba.pos.services.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,31 +29,20 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customers createCustomer(CustomerDTO customerDTO) {
         Customers customers = new Customers();
-        customers.setSaleId(customerDTO.getSaleId());
-        customers.setName(customerDTO.getName());
-        customers.setPhoneNumber(customerDTO.getPhoneNumber());
-        customers.setEmail(customerDTO.getEmail());
-        customers.setAddress(customerDTO.getAddress());
-        customers.setCompany(customerDTO.getCompany());
-        customers.setBirthday(customerDTO.getBirthday());
+        BeanUtils.copyProperties(customerDTO, customers);
         return customerRepository.save(customers);
     }
 
     @Override
-    public RestCommonResponse updateCustomer(long Id, CustomerDTO customerDTO) {
-        if (this.customerRepository.findById(Id) != null) {
-            Customers customerById = this.customerRepository.findById(Id);
-            customerById.setSaleId(customerDTO.getSaleId());
-            customerById.setName(customerDTO.getName());
-            customerById.setPhoneNumber(customerDTO.getPhoneNumber());
-            customerById.setEmail(customerDTO.getEmail());
-            customerById.setAddress(customerDTO.getAddress());
-            customerById.setCompany(customerDTO.getCompany());
-            customerById.setBirthday(customerDTO.getBirthday());
+    public RestCommonResponse updateCustomer(long id, CustomerDTO customerDTO) {
+        if (this.customerRepository.findById(id) != null) {
+            Customers customerById = this.customerRepository.findById(id);
+            BeanUtils.copyProperties(customerDTO, customerById);
             Customers updatedCustomer = this.customerRepository.save(customerById);
             return new RestCommonResponse(true, new Customers(
                     updatedCustomer.getSaleId(),
-                    updatedCustomer.getName(),
+                    updatedCustomer.getFirstName(),
+                    updatedCustomer.getLastName(),
                     updatedCustomer.getPhoneNumber(),
                     updatedCustomer.getEmail(),
                     updatedCustomer.getAddress(),
@@ -66,9 +56,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public RestCommonResponse deleteCustomer(long Id) {
-        if (this.customerRepository.findById(Id) != null) {
-            this.customerRepository.deleteById(Id);
+    public RestCommonResponse deleteCustomer(long id) {
+        if (this.customerRepository.findById(id) != null) {
+            this.customerRepository.deleteById(id);
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
@@ -77,27 +67,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public RestCommonResponse saveCustomer(CustomerDTO customerDTO, String name) {
-        Customers customer = this.customerRepository.findByName(name);
-        if (customer == null) {
-            log.info("Saving customer to the database");
-            return new RestCommonResponse(true, this.customerRepository.save(customer));
-        } else {
-            return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.AlreadyRegistered)));
-        }
+    public Customers findById(long id) {
+        log.info("Fetching Customer");
+        return this.customerRepository.findById(id);
     }
 
     @Override
-    public Customers findById(long Id) {
+    public Customers findByNumber(String phoneNumber) {
         log.info("Fetching Customer");
-        return this.customerRepository.findById(Id);
-    }
-
-    @Override
-    public Customers findByName(String name) {
-        log.info("Fetching Customer");
-        return this.customerRepository.findByName(name);
+        return this.customerRepository.findByPhoneNumber(phoneNumber);
     }
 
     @Override

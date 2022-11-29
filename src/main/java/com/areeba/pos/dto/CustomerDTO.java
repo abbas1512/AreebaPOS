@@ -13,8 +13,8 @@ import java.util.Set;
 @ToString
 public class CustomerDTO {
 
-    private long Id;
-    private Set<Sales> saleId;
+    private long id;
+    private long saleId;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -22,6 +22,5 @@ public class CustomerDTO {
     private String address;
     private String company;
     private Date birthday;
-    private String name = firstName + " " + lastName;
 
 }

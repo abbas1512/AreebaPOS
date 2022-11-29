@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @ToString
 public class TaxDTO {
 
-    private long Id;
+    private long id;
     private Items itemId;
     private String name;
     private BigDecimal percentage;

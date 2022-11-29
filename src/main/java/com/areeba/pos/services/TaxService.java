@@ -8,13 +8,9 @@ public interface TaxService {
 
     Taxes createTax(TaxDTO taxDTO);
 
-    RestCommonResponse updateTax(long Id, TaxDTO taxDTO);
+    RestCommonResponse updateTax(long id, TaxDTO taxDTO);
 
-    RestCommonResponse deleteTax(long Id);
-
-    RestCommonResponse saveTax(TaxDTO taxDTO, String name);
-
-    RestCommonResponse assignTaxToItem(long itemId, long taxId);
+    RestCommonResponse deleteTax(long id);
 
     Taxes getTax(long taxId);
 

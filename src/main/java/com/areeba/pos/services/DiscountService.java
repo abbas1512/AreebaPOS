@@ -8,13 +8,11 @@ public interface DiscountService {
 
     Discounts createDiscount(DiscountDTO discountDTO);
 
-    RestCommonResponse updateDiscount(long Id, DiscountDTO discountDTO);
+    RestCommonResponse updateDiscount(long id, DiscountDTO discountDTO);
 
-    RestCommonResponse deleteDiscount(long Id);
+    RestCommonResponse deleteDiscount(long id);
 
-    RestCommonResponse saveDiscount(DiscountDTO discountDTO, String name);
-
-    Discounts findById(long Id);
+    Discounts findById(long id);
 
     Discounts findByName(String name);
 

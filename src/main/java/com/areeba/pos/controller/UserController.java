@@ -7,19 +7,14 @@ import com.areeba.pos.services.Impl.UserServiceImpl;
 import com.areeba.pos.services.UserService;
 import com.mchange.util.AlreadyExistsException;
 import io.swagger.annotations.Api;
-import org.apache.kafka.common.protocol.Errors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+@Api
 @RestController
 @RequestMapping({"/user"})
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
-@Api(tags = "user controller")
 public class UserController {
 
     @Autowired
@@ -28,9 +23,9 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @GetMapping
-    public User getUsers(long Id) {
-        return this.userService.getUser(Id);
+    @GetMapping({"/id/{id}"})
+    public User getUser(@PathVariable long id) {
+        return this.userService.getUser(id);
     }
 
     @GetMapping({"/all"})
@@ -38,52 +33,35 @@ public class UserController {
         return this.userService.getAllUsers();
     }
 
-    @GetMapping({"/email"})
-    public User getUserEmail(String email) {
+    @GetMapping({"/email/{email}"})
+    public User getUserEmail(@PathVariable String email) {
         return this.userService.getUserEmail(email);
     }
 
-    @PostMapping({"/save"})
-    public RestCommonResponse saveUser(@RequestBody UserDTO userDTO) {
-        return this.userService.saveUser(userDTO, userDTO.getEmail());
-    }
 
     @PostMapping("/register")
-    public ModelAndView registerUser(@ModelAttribute("user") @Valid UserDTO userDTO,
-                                            HttpServletRequest request, Errors errors) {
-        try {
-            User registered = userService.registerUser(userDTO);
-        } catch (AlreadyExistsException alreadyExistsException) {
-            ModelAndView mav = null;
-            mav.addObject("message", "An account for that email already exists.");
-            return mav;
-        }
-        return new ModelAndView("successRegister", "user", userDTO);
+    public User registerUser(@RequestBody UserDTO userDTO) throws AlreadyExistsException {
+        return this.userService.registerUser(userDTO);
     }
 
-    @PostMapping({"/activate"})
-    public RestCommonResponse activateUser(String email) {
-        return this.userService.activateUser(email);
+    @DeleteMapping({"/delete/{id}"})
+    public RestCommonResponse deleteUser(@PathVariable("id") long id) {
+        return this.userService.deleteUser(id);
     }
 
-    @DeleteMapping({"/{Id}"})
-    public RestCommonResponse deleteUser(@PathVariable("Id") long Id) {
-        return this.userService.deleteUser(Id);
-    }
-
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/update/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updateUser(@PathVariable("Id") long Id, @RequestBody UserDTO userDTO) {
-        return this.userService.updateUser(Id, userDTO);
+    public RestCommonResponse updateUser(@PathVariable("id") long id, @RequestBody UserDTO userDTO) {
+        return this.userService.updateUser(id, userDTO);
     }
 
-    @PutMapping(value = {"/{id}/updatePassword"}, produces = {"application/json"})
+    @PutMapping(value = {"/updatePassword/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updatePassword(@PathVariable("Id") long Id, String password) {
-        return this.userService.updatePassword(Id, password);
+    public RestCommonResponse updatePassword(@PathVariable("id") long id, String password) {
+        return this.userService.updatePassword(id, password);
     }
 
-    @PutMapping(value = {"/{id}/updatePasswordEmail"}, produces = {"application/json"})
+    @PutMapping(value = {"/updatePasswordEmail/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     public RestCommonResponse updatePasswordEmail(String email, String password) {
         return this.userService.updatePasswordEmail(email, password);

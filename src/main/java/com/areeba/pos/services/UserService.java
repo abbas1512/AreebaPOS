@@ -9,17 +9,13 @@ public interface UserService {
 
     User registerUser(UserDTO userDTO) throws AlreadyExistsException;
 
-    RestCommonResponse updateUser(long Id, UserDTO userDTO);
+    RestCommonResponse updateUser(long id, UserDTO userDTO);
 
-    RestCommonResponse updatePassword(long Id, String password);
+    RestCommonResponse updatePassword(long id, String password);
 
     RestCommonResponse updatePasswordEmail(String email, String password);
 
-    RestCommonResponse activateUser(String email);
-
-    RestCommonResponse deleteUser(long Id);
-
-    RestCommonResponse saveUser(UserDTO userDTO, String email);
+    RestCommonResponse deleteUser(long id);
 
     User getUser(long userId);
 

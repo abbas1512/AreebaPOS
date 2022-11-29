@@ -3,11 +3,15 @@ package com.areeba.pos.services.Impl;
 import com.areeba.pos.common.ErrorResponseApisEnum;
 import com.areeba.pos.common.RestCommonResponse;
 import com.areeba.pos.dto.ItemDTO;
+import com.areeba.pos.entity.Business;
 import com.areeba.pos.entity.Items;
+import com.areeba.pos.entity.User;
+import com.areeba.pos.repository.BusinessRepository;
 import com.areeba.pos.repository.ItemRepository;
 import com.areeba.pos.services.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,38 +23,32 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private final ItemRepository itemRepository;
+    @Autowired
+    private final BusinessRepository businessRepository;
     private final Logger log = LoggerFactory.getLogger(ItemServiceImpl.class);
 
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, BusinessRepository businessRepository) {
         this.itemRepository = itemRepository;
+        this.businessRepository = businessRepository;
     }
 
     @Override
     public Items createItem(ItemDTO itemDTO) {
         Items item = new Items();
-        item.setBusinessId(itemDTO.getBusinessId());
-        item.setCategoryId(itemDTO.getCategoryId());
-        item.setVariationId(itemDTO.getVariationId());
-        item.setTaxId(itemDTO.getTaxId());
-        item.setItemSaleId(itemDTO.getItemSaleId());
-        item.setName(itemDTO.getName());
-        item.setImage(itemDTO.getImage());
-        item.setSKU(itemDTO.getSKU());
-        item.setUnit(itemDTO.getUnit());
-        item.setPrice(itemDTO.getPrice());
-        item.setStock(itemDTO.getStock());
+        BeanUtils.copyProperties(itemDTO, item);
+        Business business = businessRepository.findById(itemDTO.getBusinessId());
+        item.setBusinessId(business);
         return itemRepository.save(item);
     }
 
     @Override
-    public RestCommonResponse updateItem(long Id, ItemDTO itemDTO) {
-        if (this.itemRepository.findById(Id) != null) {
-            Items itemById = this.itemRepository.findById(Id);
-            itemById.setBusinessId(itemDTO.getBusinessId());
-            itemById.setCategoryId(itemDTO.getCategoryId());
-            itemById.setVariationId(itemDTO.getVariationId());
+    public RestCommonResponse updateItem(long id, ItemDTO itemDTO) {
+        if (this.itemRepository.findById(id) != null) {
+            Items itemById = this.itemRepository.findById(id);
+            Business business = new Business();
+            business.setId(itemDTO.getId());
             itemById.setTaxId(itemDTO.getTaxId());
-            itemById.setItemSaleId(itemDTO.getItemSaleId());
+            itemById.setCategory(itemDTO.getCategory());
             itemById.setName(itemDTO.getName());
             itemById.setImage(itemDTO.getImage());
             itemById.setSKU(itemDTO.getSKU());
@@ -60,10 +58,8 @@ public class ItemServiceImpl implements ItemService {
             Items updatedItems = this.itemRepository.save(itemById);
             return new RestCommonResponse(true, new Items(
                     updatedItems.getBusinessId(),
-                    updatedItems.getCategoryId(),
-                    updatedItems.getVariationId(),
                     updatedItems.getTaxId(),
-                    updatedItems.getItemSaleId(),
+                    updatedItems.getCategory(),
                     updatedItems.getName(),
                     updatedItems.getImage(),
                     updatedItems.getSKU(),
@@ -78,25 +74,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public RestCommonResponse deleteItem(long Id) {
-        if (this.itemRepository.findById(Id) != null) {
-            this.itemRepository.deleteById(Id);
+    public RestCommonResponse deleteItem(long id) {
+        if (this.itemRepository.findById(id) != null) {
+            this.itemRepository.deleteById(id);
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
                     (ErrorResponseApisEnum.ItemNotFound)));
-        }
-    }
-
-    @Override
-    public RestCommonResponse saveItem(ItemDTO itemDTO, String name) {
-        Items items = this.itemRepository.findByName(name);
-        if (items == null) {
-            log.info("Saving item to the database");
-            return new RestCommonResponse(true, this.itemRepository.save(items));
-        } else {
-            return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.AlreadyRegistered)));
         }
     }
 
@@ -110,6 +94,12 @@ public class ItemServiceImpl implements ItemService {
     public Items getItemName(String name) {
         log.info("Fetching Item");
         return this.itemRepository.findByName(name);
+    }
+
+    @Override
+    public Items getItemCategory(String category) {
+        log.info("Fetching Item By Category");
+        return this.itemRepository.findByCategory(category);
     }
 
     @Override

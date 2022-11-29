@@ -41,9 +41,9 @@ public class TaxServiceImpl implements TaxService {
     }
 
     @Override
-    public RestCommonResponse updateTax(long Id, TaxDTO taxDTO) {
-        if (this.taxRepository.findById(Id) != null) {
-            Taxes taxById = this.taxRepository.findById(Id);
+    public RestCommonResponse updateTax(long id, TaxDTO taxDTO) {
+        if (this.taxRepository.findById(id) != null) {
+            Taxes taxById = this.taxRepository.findById(id);
             taxById.setItemId(taxDTO.getItemId());
             taxById.setName(taxDTO.getName());
             taxById.setPercentage(taxDTO.getPercentage());
@@ -60,38 +60,13 @@ public class TaxServiceImpl implements TaxService {
     }
 
     @Override
-    public RestCommonResponse deleteTax(long Id) {
-        if (this.taxRepository.findById(Id) != null) {
-            this.taxRepository.deleteById(Id);
+    public RestCommonResponse deleteTax(long id) {
+        if (this.taxRepository.findById(id) != null) {
+            this.taxRepository.deleteById(id);
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
                     (ErrorResponseApisEnum.ItemNotFound)));
-        }
-    }
-
-
-    @Override
-    public RestCommonResponse saveTax(TaxDTO taxDTO, String name) {
-        Taxes tax = this.taxRepository.findByName(name);
-        if (tax == null) {
-            log.info("Saving tax to the database");
-            return new RestCommonResponse(true, this.taxRepository.save(tax));
-        } else {
-            return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.AlreadyRegistered)));
-        }
-    }
-
-    @Override
-    public RestCommonResponse assignTaxToItem(long itemId, long taxId) {
-        if (this.itemRepository.findById(itemId) != null) {
-            Items item = this.itemRepository.findById(itemId);
-            Taxes tax = this.taxRepository.findById(taxId);
-            item.setTaxId((Set<Taxes>) tax);
-            return new RestCommonResponse(true, "Tax Assigned");
-        } else {
-            return new RestCommonResponse(false, ErrorResponseApisEnum.ItemNotFound);
         }
     }
 

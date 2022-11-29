@@ -16,11 +16,8 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
-
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = Business.class, mappedBy = "userId")
-    private Business businessId;
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -33,8 +30,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(long Id, String password) {
-        this.Id = Id;
+    public User(long id, String password) {
+        this.id = id;
         this.password = password;
     }
 }

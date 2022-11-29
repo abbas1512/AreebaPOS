@@ -1,8 +1,8 @@
 package com.areeba.pos.dto;
 
+import com.areeba.pos.entity.Cart;
 import com.areeba.pos.entity.Customers;
 import com.areeba.pos.entity.Discounts;
-import com.areeba.pos.entity.ItemSales;
 import com.areeba.pos.enums.PaymentType;
 import lombok.*;
 
@@ -17,14 +17,14 @@ import java.util.Set;
 @ToString
 public class SaleDTO {
 
-    private long Id;
-    private Set<ItemSales> itemSaleId;
-    private Customers customerId;
+    private long id;
+    private long cartId;
+    private long customerId;
     private Set<Discounts> discountsId;
     private String notes;
     private PaymentType paymentType;
-    private BigDecimal subtotal;
-    private BigDecimal total;
+    private Double subtotal;
+    private Double total;
     private Date date;
 
 }

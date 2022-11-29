@@ -4,8 +4,6 @@ import com.areeba.pos.enums.PaymentType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,41 +14,51 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "sales")
-public class Sales implements Serializable {
+public class Sales {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
+    @Column(name = "id")
+    private long id;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = ItemSales.class, mappedBy = "saleId")
-    private Set<ItemSales> itemSaleId;
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Cart.class, mappedBy = "saleId")
+    @ToString.Exclude
+    private Set<Cart> cartId;
 
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = Customers.class)
-    @JoinColumn(name = "customerId", nullable = false)
+    @JoinColumn(name = "customer_id")
     private Customers customerId;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Discounts.class, mappedBy = "saleId")
+    @ToString.Exclude
     private Set<Discounts> discountsId;
 
     @Column(name = "notes", nullable = true)
     private String notes;
 
-    @Column(name = "paymentType", nullable = false)
+    @Column(name = "payment_type", nullable = false)
     private PaymentType paymentType;
 
-    @Column(name = "subtotal", nullable = false)
-    private BigDecimal subtotal;
+    @Column(name = "subtotal", insertable = false)
+    private Double subtotal;
 
-    @Column(name = "total", nullable = false)
-    private BigDecimal total;
+    @Column(name = "total" , insertable = false)
+    private Double total;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = true)
     private Date date;
 
-    public Sales(Set<ItemSales> itemSaleId, Customers customerId, Set<Discounts> discountsId,
-                 String notes, PaymentType paymentType, BigDecimal subtotal, BigDecimal total, Date date) {
-        this.itemSaleId = itemSaleId;
+    public Double getSubtotal() {
+        return subtotal = cartId.stream().filter(o -> o.getItemTotal() > 10).mapToDouble(Cart::getItemTotal).sum();
+    }
+
+    public Double getTotal() {
+        return total = subtotal * discountsId.stream().filter(o -> o.getAmount() > 10).mapToDouble(Discounts::getAmount).sum();
+    }
+
+    public Sales(Set<Cart> cartId, Customers customerId, Set<Discounts> discountsId,
+                 String notes, PaymentType paymentType, Double subtotal, Double total, Date date) {
+        this.cartId = cartId;
         this.customerId = customerId;
         this.discountsId = discountsId;
         this.notes = notes;
@@ -59,4 +67,5 @@ public class Sales implements Serializable {
         this.total = total;
         this.date = date;
     }
+
 }

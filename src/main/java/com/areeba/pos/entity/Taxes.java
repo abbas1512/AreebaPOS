@@ -18,10 +18,10 @@ public class Taxes implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long Id;
+    private long id;
 
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = Business.class)
-    @JoinColumn(name = "item_id", nullable = true)
+    @JoinColumn(name = "itemId", nullable = true)
     private Items itemId;
 
     @Column(name = "name", nullable = false)

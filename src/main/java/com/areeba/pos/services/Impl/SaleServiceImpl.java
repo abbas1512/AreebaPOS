@@ -2,20 +2,22 @@ package com.areeba.pos.services.Impl;
 
 import com.areeba.pos.common.ErrorResponseApisEnum;
 import com.areeba.pos.common.RestCommonResponse;
-import com.areeba.pos.dto.ItemSaleDTO;
+import com.areeba.pos.dto.CartDTO;
 import com.areeba.pos.dto.SaleDTO;
-import com.areeba.pos.entity.ItemSales;
+import com.areeba.pos.entity.Cart;
+import com.areeba.pos.entity.Customers;
 import com.areeba.pos.entity.Sales;
-import com.areeba.pos.repository.ItemSalesRepository;
-import com.areeba.pos.repository.SaleRepository;
+import com.areeba.pos.repository.*;
 import com.areeba.pos.services.SaleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.BadRequestException;
 import java.util.List;
+import java.util.Set;
 
 @Service("SaleService")
 public class SaleServiceImpl implements SaleService {
@@ -23,27 +25,38 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private final SaleRepository saleRepository;
     @Autowired
-    private final ItemSalesRepository itemSalesRepository;
+    private final CartRepository cartRepository;
+    @Autowired
+    private final ItemRepository itemRepository;
+    @Autowired
+    private final CustomerRepository customerRepository;
+    @Autowired
+    private final DiscountRepository discountRepository;
     private final Logger log = LoggerFactory.getLogger(SaleServiceImpl.class);
 
-    public SaleServiceImpl(SaleRepository saleRepository, ItemSalesRepository itemSalesRepository) {
+    public SaleServiceImpl(SaleRepository saleRepository, CartRepository cartRepository,
+                           ItemRepository itemRepository, CustomerRepository customerRepository,
+                           DiscountRepository discountRepository) {
         this.saleRepository = saleRepository;
-        this.itemSalesRepository = itemSalesRepository;
+        this.cartRepository = cartRepository;
+        this.itemRepository = itemRepository;
+        this.customerRepository = customerRepository;
+        this.discountRepository = discountRepository;
     }
 
     @Override
-    public ItemSales addItem(ItemSaleDTO itemSaleDTO) {
-        ItemSales itemSale = new ItemSales();
-        itemSale.setItemId(itemSaleDTO.getItemId());
-        itemSale.setSaleId(itemSaleDTO.getSaleId());
-        itemSale.setQuantity(itemSaleDTO.getQuantity());
-        return itemSalesRepository.save(itemSale);
+    public Cart addItem(CartDTO cartDTO) {
+        Cart cart = new Cart();
+        cart.setItemId(itemRepository.findById(cartDTO.getItemId()));
+        cart.setQuantity(cartDTO.getQuantity());
+        cart.setItemTotal(cartDTO.getItemTotal());
+        return cartRepository.save(cart);
     }
 
     @Override
-    public RestCommonResponse removeItem(long Id) {
-        if (this.itemSalesRepository.findById(Id) != null) {
-            this.itemSalesRepository.deleteById(Id);
+    public RestCommonResponse removeItem(long cartId) {
+        if (this.cartRepository.findById(cartId) != null) {
+            this.cartRepository.deleteById(cartId);
             return new RestCommonResponse(true, "Removed");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
@@ -54,21 +67,21 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Sales createSale(SaleDTO saleDTO) {
         Sales sale = new Sales();
-        sale.setItemSaleId(saleDTO.getItemSaleId());
-        sale.setCustomerId(saleDTO.getCustomerId());
+        sale.setCustomerId(customerRepository.findById(saleDTO.getCustomerId()));
+        sale.setCartId(cartRepository.findById(saleDTO.getCartId()));
         sale.setDiscountsId(saleDTO.getDiscountsId());
         sale.setNotes(saleDTO.getNotes());
         sale.setPaymentType(saleDTO.getPaymentType());
-        sale.setSubtotal(sale.getSubtotal());
-        sale.setTotal(sale.getTotal());
+        sale.setSubtotal(saleDTO.getSubtotal());
+        sale.setTotal(saleDTO.getTotal());
         sale.setDate(saleDTO.getDate());
         return saleRepository.save(sale);
     }
 
     @Override
-    public RestCommonResponse cancelSale(long Id) {
-        if (this.saleRepository.findById(Id) != null) {
-            this.saleRepository.deleteById(Id);
+    public RestCommonResponse cancelSale(long id) {
+        if (this.saleRepository.findById(id) != null) {
+            this.saleRepository.deleteById(id);
             return new RestCommonResponse(true, "Cancelled");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
@@ -77,21 +90,15 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public RestCommonResponse confirmSale(SaleDTO saleDTO, long Id) {
-        Sales sale = this.saleRepository.findById(Id);
-        if (sale == null) {
-            log.info("Sale has been confirmed");
-            return new RestCommonResponse(true, this.saleRepository.save(sale));
-        } else {
-            return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.AlreadyRegistered)));
-        }
+    public Sales getSale(long id) {
+        log.info("Fetching Sale");
+        return this.saleRepository.findById(id);
     }
 
     @Override
-    public Sales getSale(long Id) {
-        log.info("Fetching Sale");
-        return this.saleRepository.findById(Id);
+    public Cart viewCart(long id) {
+        log.info("Fetching Cart");
+        return (Cart) this.cartRepository.findById(id);
     }
 
     @Override

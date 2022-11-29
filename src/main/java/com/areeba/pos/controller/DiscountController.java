@@ -19,9 +19,9 @@ public class DiscountController {
     @Autowired
     private DiscountServiceImpl discountServiceImpl;
 
-    @GetMapping
-    public Discounts getDiscount(long Id) {
-        return this.discountService.findById(Id);
+    @GetMapping({"/id/{id}"})
+    public Discounts getDiscount(@PathVariable long id) {
+        return this.discountService.findById(id);
     }
 
     @GetMapping({"/all"})
@@ -29,29 +29,24 @@ public class DiscountController {
         return this.discountService.getAll();
     }
 
-    @GetMapping({"/name"})
-    public Discounts getDiscountName(String name) {
+    @GetMapping({"/name/{name}"})
+    public Discounts getDiscountName(@PathVariable String name) {
         return this.discountService.findByName(name);
     }
 
     @PostMapping({"/create"})
-    public Discounts createDiscount(DiscountDTO discountDTO) {
+    public Discounts createDiscount(@RequestBody DiscountDTO discountDTO) {
         return this.discountService.createDiscount(discountDTO);
     }
 
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/update/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updateDiscount(@PathVariable("Id") long Id, @RequestBody DiscountDTO discountDTO) {
-        return this.discountService.updateDiscount(Id, discountDTO);
+    public RestCommonResponse updateDiscount(@PathVariable("id") long id, @RequestBody DiscountDTO discountDTO) {
+        return this.discountService.updateDiscount(id, discountDTO);
     }
 
-    @DeleteMapping({"/{Id}"})
-    public RestCommonResponse deleteDiscount(@PathVariable("Id") long Id) {
-        return this.discountService.deleteDiscount(Id);
-    }
-
-    @PostMapping({"/save"})
-    public RestCommonResponse saveDiscount(@RequestBody DiscountDTO discountDTO) {
-        return this.discountService.saveDiscount(discountDTO, discountDTO.getName());
+    @DeleteMapping({"/delete/{id}"})
+    public RestCommonResponse deleteDiscount(@PathVariable("id") long id) {
+        return this.discountService.deleteDiscount(id);
     }
 }

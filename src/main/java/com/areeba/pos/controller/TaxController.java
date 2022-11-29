@@ -20,9 +20,9 @@ public class TaxController {
     @Autowired
     private TaxServiceImpl taxServiceImpl;
 
-    @GetMapping
-    public Taxes getTax(long Id) {
-        return this.taxService.getTax(Id);
+    @GetMapping({"/id/{id}"})
+    public Taxes getTax(@PathVariable long id) {
+        return this.taxService.getTax(id);
     }
 
     @GetMapping({"/all"})
@@ -30,29 +30,25 @@ public class TaxController {
         return this.taxService.getAllTaxes();
     }
 
-    @GetMapping({"/name"})
-    public Taxes getTaxName(String name) {
+    @GetMapping({"/name/{name}"})
+    public Taxes getTaxName(@PathVariable String name) {
         return this.taxService.getTaxName(name);
     }
 
     @PostMapping({"/create"})
-    public Taxes createTax(TaxDTO taxDTO) {
+    public Taxes createTax(@RequestBody TaxDTO taxDTO) {
         return this.taxService.createTax(taxDTO);
     }
 
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/update/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updateTax(@PathVariable("Id") long Id, @RequestBody TaxDTO taxDTO) {
-        return this.taxService.updateTax(Id, taxDTO);
+    public RestCommonResponse updateTax(@PathVariable("id") long id, @RequestBody TaxDTO taxDTO) {
+        return this.taxService.updateTax(id, taxDTO);
     }
 
-    @DeleteMapping({"/{Id}"})
-    public RestCommonResponse deleteTax(@PathVariable("Id") long Id) {
-        return this.taxService.deleteTax(Id);
+    @DeleteMapping({"/delete/{id}"})
+    public RestCommonResponse deleteTax(@PathVariable("id") long id) {
+        return this.taxService.deleteTax(id);
     }
 
-    @PostMapping({"/save"})
-    public RestCommonResponse saveTax(@RequestBody TaxDTO taxDTO) {
-        return this.taxService.saveTax(taxDTO, taxDTO.getName());
-    }
 }

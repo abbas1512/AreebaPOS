@@ -8,13 +8,9 @@ public interface BusinessService {
 
     Business createBusiness(BusinessDTO businessDTO);
 
-    RestCommonResponse updateBusiness(long Id, BusinessDTO businessDTO);
+    RestCommonResponse updateBusiness(long id, BusinessDTO businessDTO);
 
-    RestCommonResponse deleteBusiness(long Id);
-
-    RestCommonResponse saveBusiness(BusinessDTO businessDTO, String name);
-
-    RestCommonResponse assignBusinessToUser(long userId, long businessId);
+    RestCommonResponse deleteBusiness(long id);
 
     Business getBusiness(long businessId);
 

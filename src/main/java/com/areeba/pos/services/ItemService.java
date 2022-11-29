@@ -8,15 +8,15 @@ public interface ItemService {
 
     Items createItem(ItemDTO itemDTO);
 
-    RestCommonResponse updateItem(long Id, ItemDTO itemDTO);
+    RestCommonResponse updateItem(long id, ItemDTO itemDTO);
 
-    RestCommonResponse deleteItem(long Id);
-
-    RestCommonResponse saveItem(ItemDTO itemDTO, String name);
+    RestCommonResponse deleteItem(long id);
 
     Items getItem(long itemId);
 
     Items getItemName(String name);
+
+    Items getItemCategory(String category);
 
     RestCommonResponse getAll();
 

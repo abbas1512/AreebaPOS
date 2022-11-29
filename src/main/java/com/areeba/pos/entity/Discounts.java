@@ -17,8 +17,8 @@ public class Discounts implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
+    @Column(name = "id")
+    private long id;
 
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = Discounts.class)
     private Sales saleId;

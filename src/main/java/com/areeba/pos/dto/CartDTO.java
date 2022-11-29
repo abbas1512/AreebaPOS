@@ -1,6 +1,5 @@
 package com.areeba.pos.dto;
 
-import com.areeba.pos.entity.Business;
 import lombok.*;
 
 @NoArgsConstructor
@@ -8,12 +7,12 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class UserDTO {
+public class CartDTO {
 
     private long id;
-
-    private String email;
-
-    private String password;
+    private long itemId;
+    private long saleId;
+    private int quantity;
+    private Double itemTotal;
 
 }

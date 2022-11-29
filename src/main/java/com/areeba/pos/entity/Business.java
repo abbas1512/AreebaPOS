@@ -1,6 +1,7 @@
 package com.areeba.pos.entity;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,26 +16,26 @@ import java.util.Set;
 @Table(name = "business")
 public class Business implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
+    @Column(name = "id")
+    private long id;
 
-    @OneToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = User.class)
+    @JoinColumn(name = "userId")
     private User userId;
 
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Items.class, mappedBy = "businessId")
+    @OneToMany(mappedBy = "businessId")
     private Set<Items> itemId;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-
-    @Column(name = "firstName", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "type", nullable = false)
@@ -49,14 +50,16 @@ public class Business implements Serializable {
     @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "postalCode", nullable = false)
+    @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
-    public Business(User userId, Set<Items> itemId, String name, String type,
-                    String category, String address, String city, String postalCode) {
+    public Business(User userId, Set<Items> itemId, String name, String firstName, String lastName,
+                    String type, String category, String address, String city, String postalCode) {
         this.userId = userId;
         this.itemId = itemId;
         this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.type = type;
         this.category = category;
         this.address = address;

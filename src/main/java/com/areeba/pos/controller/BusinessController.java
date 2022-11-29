@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Api
 @RestController
 @RequestMapping("/business")
 @CrossOrigin(origins = {"*"}, allowedHeaders = {"*"})
-@Api(tags = "business controller")
 public class BusinessController {
 
     @Autowired
@@ -22,9 +22,9 @@ public class BusinessController {
     @Autowired
     private BusinessServiceImpl businessServiceImpl;
 
-    @GetMapping
-    public Business getBusiness(long Id) {
-        return this.businessService.getBusiness(Id);
+    @GetMapping({"/id/{id}"})
+    public Business getBusiness(@PathVariable long id) {
+        return this.businessService.getBusiness(id);
     }
 
     @GetMapping({"/all"})
@@ -32,34 +32,24 @@ public class BusinessController {
         return businessService.getAllBusiness();
     }
 
-    @GetMapping({"/name"})
-    public Business getBusinessName(String name) {
+    @GetMapping({"name/{name}"})
+    public Business getBusinessName(@PathVariable String name) {
         return this.businessService.getBusinessName(name);
     }
 
     @PostMapping({"/register"})
-    public Business createBusiness(BusinessDTO businessDTO) {
+    public Business createBusiness(@RequestBody BusinessDTO businessDTO) {
         return this.businessService.createBusiness(businessDTO);
     }
 
-    @PutMapping(value = {"/{id}"}, produces = {"application/json"})
+    @PutMapping(value = {"/update/{id}"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public RestCommonResponse updateBusiness(@PathVariable("Id") long Id, @RequestBody BusinessDTO businessDTO) {
-        return this.businessService.updateBusiness(Id, businessDTO);
+    public RestCommonResponse updateBusiness(@PathVariable("id") long id, @RequestBody BusinessDTO businessDTO) {
+        return this.businessService.updateBusiness(id, businessDTO);
     }
 
-    @DeleteMapping({"/{Id}"})
-    public RestCommonResponse deleteBusiness(@PathVariable("Id") long Id) {
-        return this.businessService.deleteBusiness(Id);
+    @DeleteMapping({"/delete/{id}"})
+    public RestCommonResponse deleteBusiness(@PathVariable("id") long id) {
+        return this.businessService.deleteBusiness(id);
     }
-
-    @PostMapping({"/save"})
-    public RestCommonResponse saveBusiness(@RequestBody BusinessDTO businessDTO) {
-        return this.businessService.saveBusiness(businessDTO, businessDTO.getName());
-    }
-
-//    @PostMapping
-//    public RestCommonResponse assignBusinessToUser(@RequestBody BusinessToUserForm form) {
-//        return this.businessService.assignBusinessToUser(form.getUserId(), form.getBusinessName());
-//    }
 }

@@ -1,9 +1,6 @@
 package com.areeba.pos.dto;
 
-import com.areeba.pos.entity.Items;
 import lombok.*;
-
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,8 +9,7 @@ import java.util.Set;
 @ToString
 public class CategoryDTO {
 
-    private long Id;
-    private Set<Items> itemId;
+    private long id;
     private String name;
 
 }

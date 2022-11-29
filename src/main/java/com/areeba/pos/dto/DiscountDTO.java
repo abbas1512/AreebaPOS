@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class DiscountDTO {
 
-    private long Id;
+    private long id;
     private Sales saleId;
     private String name;
     private Type type;

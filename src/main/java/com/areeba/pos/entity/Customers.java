@@ -18,19 +18,19 @@ public class Customers implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
+    @Column(name = "id")
+    private long id;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Sales.class, mappedBy = "customerId")
     private Set<Sales> saleId;
 
-    @Column(name = "firstName", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "phoneNumber", nullable = false)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @Column(name = "email", nullable = true)
@@ -45,16 +45,15 @@ public class Customers implements Serializable {
     @Column(name = "birthday", nullable = true)
     private Date birthday;
 
-    private String name = firstName + " " + lastName;
-
-    public Customers(Set<Sales> saleId, String name, String phoneNumber,
+    public Customers(Set<Sales> saleId, String firstName, String lastName, String phoneNumber,
                      String email, String address, String company, Date birthday) {
         this.saleId = saleId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
         this.company = company;
         this.birthday = birthday;
-        this.name = name;
     }
 }

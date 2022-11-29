@@ -1,10 +1,10 @@
 package com.areeba.pos.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,21 +13,18 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "category")
+@JsonIgnoreProperties
 public class Category implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private long Id;
-
-    @OneToMany(cascade = CascadeType.ALL, targetEntity = Items.class, mappedBy = "categoryId")
-    private Set<Items> itemId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    public Category(Set<Items> itemId, String name) {
-        this.itemId = itemId;
+    public Category(String name) {
         this.name = name;
     }
 }

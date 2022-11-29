@@ -15,17 +15,15 @@ import java.util.Set;
 @ToString
 public class ItemDTO {
 
-    private long Id;
+    private long id;
+    private long businessId;
     private Set<Taxes> taxId;
-    private Set<ItemSales> itemSaleId;
-    private Business businessId;
-    private Category categoryId;
-    private Set<Variations> variationId;
+    private String category;
     private String name;
     private Blob image;
     private String SKU;
     private Unit unit;
-    private BigDecimal price;
+    private float price;
     private int stock;
 
 }

@@ -13,8 +13,8 @@ import java.util.Set;
 @ToString
 public class BusinessDTO {
 
-    private long Id;
-    private User userId;
+    private long id;
+    private long userId;
     private Set<Items> itemId;
     private String name;
     private String firstName;

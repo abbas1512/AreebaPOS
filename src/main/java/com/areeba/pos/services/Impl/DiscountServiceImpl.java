@@ -8,6 +8,7 @@ import com.areeba.pos.repository.DiscountRepository;
 import com.areeba.pos.services.DiscountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,17 +30,14 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public Discounts createDiscount(DiscountDTO discountDTO) {
         Discounts discount = new Discounts();
-        discount.setSaleId(discountDTO.getSaleId());
-        discount.setName(discountDTO.getName());
-        discount.setType(discountDTO.getType());
-        discount.setAmount(discountDTO.getAmount());
+        BeanUtils.copyProperties(discountDTO, discount);
         return discountRepository.save(discount);
     }
 
     @Override
-    public RestCommonResponse updateDiscount(long Id, DiscountDTO discountDTO) {
-        if (this.discountRepository.findById(Id) != null) {
-            Discounts discountsById = this.discountRepository.findById(Id);
+    public RestCommonResponse updateDiscount(long id, DiscountDTO discountDTO) {
+        if (this.discountRepository.findById(id) != null) {
+            Discounts discountsById = this.discountRepository.findById(id);
             discountsById.setSaleId(discountDTO.getSaleId());
             discountsById.setName(discountDTO.getName());
             discountsById.setType(discountDTO.getType());
@@ -58,9 +56,9 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public RestCommonResponse deleteDiscount(long Id) {
-        if (this.discountRepository.findById(Id) != null) {
-            this.discountRepository.deleteById(Id);
+    public RestCommonResponse deleteDiscount(long id) {
+        if (this.discountRepository.findById(id) != null) {
+            this.discountRepository.deleteById(id);
             return new RestCommonResponse(true, "Deleted");
         } else {
             return new RestCommonResponse(false, new BadRequestException(String.valueOf
@@ -69,21 +67,9 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public RestCommonResponse saveDiscount(DiscountDTO discountDTO, String name) {
-        Discounts discounts = this.discountRepository.findByName(name);
-        if (discounts == null) {
-            log.info("Saving discount to the database");
-            return new RestCommonResponse(true, this.discountRepository.save(discounts));
-        } else {
-            return new RestCommonResponse(false, new BadRequestException(String.valueOf
-                    (ErrorResponseApisEnum.AlreadyRegistered)));
-        }
-    }
-
-    @Override
-    public Discounts findById(long Id) {
+    public Discounts findById(long id) {
         log.info("Fetching Discount");
-        return this.discountRepository.findById(Id);
+        return this.discountRepository.findById(id);
     }
 
     @Override
