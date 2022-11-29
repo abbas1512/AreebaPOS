@@ -70,5 +70,4 @@ public class Sales {
         this.total = total;
         this.date = date;
     }
-
 }
