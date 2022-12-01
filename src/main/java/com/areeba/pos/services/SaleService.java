@@ -10,15 +10,15 @@ public interface SaleService {
 
     Cart addItem(CartDTO cartDTO);
 
-    RestCommonResponse removeItem(long cartId);
+    RestCommonResponse removeItem(long id);
+
+    Cart viewCart(long id);
 
     Sales createSale(SaleDTO saleDTO);
 
     RestCommonResponse cancelSale(long id);
 
     Sales getSale(long id);
-
-    Cart viewCart(long cartId);
 
     RestCommonResponse getAllSales();
 

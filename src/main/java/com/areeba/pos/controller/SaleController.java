@@ -2,11 +2,8 @@ package com.areeba.pos.controller;
 
 import com.areeba.pos.common.RestCommonResponse;
 import com.areeba.pos.dto.CartDTO;
-import com.areeba.pos.dto.CustomerDTO;
 import com.areeba.pos.dto.SaleDTO;
 import com.areeba.pos.entity.Cart;
-import com.areeba.pos.entity.Customers;
-import com.areeba.pos.entity.Items;
 import com.areeba.pos.entity.Sales;
 import com.areeba.pos.services.Impl.SaleServiceImpl;
 import com.areeba.pos.services.SaleService;
@@ -29,14 +26,14 @@ public class SaleController {
         return this.saleService.addItem(cartDTO);
     }
 
-    @DeleteMapping({"/removeItem/{id}"})
-    public RestCommonResponse removeItem(@PathVariable("id") long id) {
-        return this.saleService.removeItem(id);
+    @DeleteMapping({"/removeItem/{cartId}"})
+    public RestCommonResponse removeItem(@PathVariable("cartId") long cartId) {
+        return this.saleService.removeItem(cartId);
     }
 
-    @GetMapping({"/viewCart/{cartId}"})
-    public Cart viewCart(@PathVariable long cartId) {
-        return this.saleService.viewCart(cartId);
+    @GetMapping({"/viewCart/{id}"})
+    public Cart viewCart(@PathVariable("id") long id) {
+        return this.saleService.viewCart(id);
     }
 
     @PostMapping({"/create"})
@@ -50,7 +47,7 @@ public class SaleController {
     }
 
     @GetMapping({"/id/{id}"})
-    public Sales getSale(@PathVariable long id) {
+    public Sales getSale(@PathVariable("id") long id) {
         return this.saleService.getSale(id);
     }
 

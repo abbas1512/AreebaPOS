@@ -31,7 +31,6 @@ public class Sales {
     private Customers customerId;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Discounts.class, mappedBy = "saleId")
-    @ToString.Exclude
     private Set<Discounts> discountsId;
 
     @Column(name = "notes", nullable = true)

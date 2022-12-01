@@ -26,7 +26,7 @@ public class Cart implements Serializable {
     private Items itemId;
 
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = Sales.class)
-    @JoinColumn(name = "saleId", nullable = false)
+    @JoinColumn(name = "sale_Id", nullable = false)
     private Sales saleId;
 
     @Column(name = "quantity", nullable = false)
@@ -36,11 +36,12 @@ public class Cart implements Serializable {
     private Double itemTotal;
 
     public Double getItemTotal() {
-        return itemTotal = (double) (itemId.getPrice() * quantity);
+        return itemTotal = (double)(itemId.getPrice() * quantity);
     }
 
-    public Cart(Items itemId, int quantity, Double itemTotal) {
+    public Cart(Items itemId, Sales saleId, int quantity, Double itemTotal) {
         this.itemId = itemId;
+        this.saleId = saleId;
         this.quantity = quantity;
         this.itemTotal = itemTotal;
     }
